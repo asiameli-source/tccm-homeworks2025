@@ -53,6 +53,45 @@ int main(){
 		printf(" eps[%d] = %.10f\n", i, mo_energy[i]);
 	}
 
+	// read two-electron integrals
+	// first, get the number of non-zero integrals
+	// trexio_exit_code trexio_read_mo_2e_int_eri_size(trexio_t* const trexio_file, int64_t* const n_integrals);
+	int64_t n_integrals = -1;
+	rc = trexio_read_mo_2e_int_eri_size(trexio_file, &n_integrals);
+	if (rc != TREXIO_SUCCESS) {
+		printf("TREXIO Error(read n_integrals): %s\n", trexio_string_of_error(rc)); 
+	}
+	printf("n_integrals = %ld\n", n_integrals);
+	// allocate memory for indices and values
+	int32_t* index = malloc(4 * n_integrals * sizeof(int32_t));
+	if (index == NULL) {
+		fprintf(stderr, "Malloc failed for index");
+		exit(1);
+	}
+	double* value = malloc(n_integrals * sizeof(double));
+	if (value == NULL) {
+		fprintf(stderr, "Malloc failed for value");
+		exit(1);
+	}
+	// then, read integrals from the file
+	int64_t offset_file = 0;
+	int64_t buffer_size = n_integrals;
+	rc = trexio_read_mo_2e_int_eri(trexio_file, offset_file, &buffer_size, index, value);
+	if (rc != TREXIO_SUCCESS) {
+		printf("TREXIO Error(read eri): %s\n", trexio_string_of_error(rc));
+	}
+
+	for (int64_t n = 1; n < buffer_size + 1; n++) {
+		int i = index[4*n + 0];
+		int j = index[4*n + 1];
+		int k = index[4*n + 2];
+		int l = index[4*n + 3];
+		double eri = value[n];
+		//if (n < 40) {
+	       	//	printf("ERI %ld: (%d %d | %d %d) = %.12e\n", (long)n, i, j, k, l, eri);
+		//}
+	}
+
 	// close the TREXIO file
 	rc = trexio_close(trexio_file);
 	if (rc != TREXIO_SUCCESS) {
