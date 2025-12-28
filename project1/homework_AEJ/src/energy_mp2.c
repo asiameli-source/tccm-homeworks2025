@@ -2,6 +2,35 @@
 #include <stdlib.h> //due to the exit(1)
 #include <stdint.h> //due to the int32_t
 #include <trexio.h>
+#include<math.h>
+
+// function to swap indices
+static inline void swap_int(int *a, int *b) {
+  int t = *a;
+  *a = *b;
+  *b = t;
+}
+
+// index mapping helper
+// turn a 4-index object into one array address
+static inline size_t idx_ijab(int i,int j,int a,int b,int n_occ,int n_virt){
+  return (size_t)b + (size_t)n_virt * ((size_t)a + (size_t)n_virt * ((size_t)j + (size_t)n_occ*(size_t)i));
+}
+
+// two-electron integrals obey 8-fold permutational symmetry
+// function to handle the symmetry
+// put the integrals all in the same order
+static void canonicalize_eri(int *p, int *q, int *r, int *s) { // 'void' to rewrite indices
+        // sort each pair
+        if (*q < *p) swap_int(p,q);
+        if (*s < *r) swap_int(r,s);
+        // compare the two pairs (occupied and virtual)
+        if ((*r < *p) || (*r == *p && *s < *q)) {
+                swap_int(p,r);
+		swap_int(q,s);
+        }
+}
+
 int main(){
 	// open a TREXIO file
 	trexio_exit_code rc;
@@ -49,7 +78,7 @@ int main(){
                 exit(1);
         }
 	printf("mo_energies: \n");
-	for (int i = 1; i < mo_num + 1; i++) {
+	for (int i = 0; i < mo_num; i++) {
 		printf(" eps[%d] = %.10f\n", i, mo_energy[i]);
 	}
 
@@ -73,7 +102,7 @@ int main(){
 		fprintf(stderr, "Malloc failed for value");
 		exit(1);
 	}
-	// then, read integrals from the file
+	// then, read two electron integrals from the file
 	int64_t offset_file = 0;
 	int64_t buffer_size = n_integrals;
 	rc = trexio_read_mo_2e_int_eri(trexio_file, offset_file, &buffer_size, index, value);
@@ -81,7 +110,12 @@ int main(){
 		printf("TREXIO Error(read eri): %s\n", trexio_string_of_error(rc));
 	}
 
-	for (int64_t n = 1; n < buffer_size + 1; n++) {
+	// store 4D tensor as 1D array
+	size_t G_size = (size_t)n_occ * n_occ * n_virt * n_virt;
+	double* G = calloc(G_size, sizeof(double));
+        if (G == NULL) { fprintf(stderr, "calloc failed for G\n"); exit(1); }
+
+	for (int64_t n = 0; n < buffer_size; n++) {
 		int i = index[4*n + 0];
 		int j = index[4*n + 1];
 		int k = index[4*n + 2];
@@ -90,6 +124,16 @@ int main(){
 		//if (n < 40) {
 	       	//	printf("ERI %ld: (%d %d | %d %d) = %.12e\n", (long)n, i, j, k, l, eri);
 		//}
+		canonicalize_eri(&i, &j, &k, &l);
+		// keep only occ-occ | virt-virt
+		if (i < n_occ && j < n_occ && k >= n_occ && l >= n_occ) {
+			printf("<%d %d | %d %d> = %.12e\n", i,j,k,l,eri);
+			int a = k - n_occ;
+			int b = l - n_occ;
+			size_t pos = idx_ijab(i, j, a, b, n_occ, n_virt);
+			G[pos] += eri; // if the same integral arrives twice, you accumulate it rather than overwrite
+		}	
+	double ijab = G[idx_ijab(i,j,a,b,n_occ,n_virt)];
 	}
 
 	// close the TREXIO file
@@ -103,3 +147,4 @@ int main(){
 	return 0;	
 
 }
+
