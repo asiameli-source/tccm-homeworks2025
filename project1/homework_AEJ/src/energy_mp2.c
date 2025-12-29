@@ -110,9 +110,9 @@ int main(){
 		printf("TREXIO Error(read eri): %s\n", trexio_string_of_error(rc));
 	}
 
-	// store 4D tensor as 1D array
-	size_t G_size = (size_t)n_occ * n_occ * n_virt * n_virt;
-	double* G = calloc(G_size, sizeof(double));
+	// store 4D tensor as 1D array, object G(i, j, a, b) of the four indexes
+	size_t G_size = (size_t)n_occ * n_occ * n_virt * n_virt; // compute double numbers to store
+	double* G = calloc(G_size, sizeof(double)); // allocate memory for the MP2 integral
         if (G == NULL) { fprintf(stderr, "calloc failed for G\n"); exit(1); }
 
 	for (int64_t n = 0; n < buffer_size; n++) {
@@ -125,15 +125,16 @@ int main(){
 	       	//	printf("ERI %ld: (%d %d | %d %d) = %.12e\n", (long)n, i, j, k, l, eri);
 		//}
 		canonicalize_eri(&i, &j, &k, &l);
+		static int printed = 0;
 		// keep only occ-occ | virt-virt
 		if (i < n_occ && j < n_occ && k >= n_occ && l >= n_occ) {
-			printf("<%d %d | %d %d> = %.12e\n", i,j,k,l,eri);
+			//printf("<%d %d | %d %d> = %.12e\n", i,j,k,l,eri);
 			int a = k - n_occ;
 			int b = l - n_occ;
-			size_t pos = idx_ijab(i, j, a, b, n_occ, n_virt);
+			size_t pos = idx_ijab(i, j, a, b, n_occ, n_virt); // address calculation
 			G[pos] += eri; // if the same integral arrives twice, you accumulate it rather than overwrite
+		        double ijab = G[idx_ijab(i,j,a,b,n_occ,n_virt)];
 		}	
-	double ijab = G[idx_ijab(i,j,a,b,n_occ,n_virt)];
 	}
 
 	// close the TREXIO file
@@ -144,7 +145,30 @@ int main(){
 	}
 	trexio_file = NULL;
 	// where each TREXIO function returns an exit code, indicating success
-	return 0;	
 
+	// compute the energy_MP2 equation
+	
+	// convenient access macro: a,b are 0..n_virt-1 (virtual indices)
+	#define G4(i,j,a,b)  ( G[idx_ijab((i),(j),(a),(b), n_occ, n_virt)] )
+	double energy_mp2 = 0;
+	for (int i=0; i < n_occ; i++){
+		for (int j=0; j < n_occ; j++){
+			for (int a=0; a < n_virt; a++){
+				for (int b=0; b < n_virt; b++){
+					double ijab = G4(i, j, a, b);
+					double ijba = G4(i, j, b, a);
+					double denom = mo_energy[i] + mo_energy[j] - mo_energy[a + n_occ] - mo_energy[b + n_occ];
+					energy_mp2 += ijab * (2.0*ijab - ijba) / denom;
+				}
+			}
+		}
+	}
+	printf("Energy_MP2 = %.12f\n", energy_mp2);
+	// prevent memory leaks
+	free(mo_energy);
+        free(G);
+        free(index);
+        free(value);
+	return 0;
 }
 
