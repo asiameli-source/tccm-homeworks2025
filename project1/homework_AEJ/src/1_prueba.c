@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <trexio.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 int main() {
   int num = 3;  // Number of atoms
@@ -9,18 +11,19 @@ int main() {
     0.  ,  2.70519714,  1.85136466,
     0.  , -2.70519714,  1.85136466 };
  
-
+struct 
  trexio_exit_code rc;
-
+ 
  // Open TREXIO file
- trexio_t* trexio_file = trexio_open(h2o.h5, 'r', TREXIO_AUTO, &rc);
+ trexio_t* trexio_file = trexio_open("h2o.h5", 'r', TREXIO_AUTO, &rc);
  if (rc != TREXIO_SUCCESS) {
    printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
    exit(1);
  }
 
+// Write coord
+ trexio_write_nucleus_coord(trexio_file, &coord[0][0]);
 // Reading Nuclear repulsion energy
- trexio_exit_code rc;
  double energy;
  rc = trexio_read_nucleus_repulsion(trexio_file, &energy);
  //---check the return code---
@@ -31,22 +34,37 @@ int main() {
 
 //
 // Obtain Number of up electrons (Nocc)
- trexio_exit_code trexio_read_electron_up_num(trexio_t* const trexio_file, int32_t* const n_up);
-
+ int32_t n_up = 0;
+ rc = trexio_read_electron_up_num(trexio_file, &n_up);
+ if (rc != TREXIO_SUCCESS) {
+   printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
+   exit(1);
+ }
 //
 // Reading one-electron integrals 
 //
 /// Molecular orbital number
- trexio_exit_code trexio_read_mo_num(trexio_t* const trexio_file, int32_t*const mo_num);
-///
+ int32_t mo_num = 0;
+ rc = trexio_read_mo_num(trexio_file, &mo_num);
+ if (rc != TREXIO_SUCCESS) {
+   printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
+   exit(1);
+ }
 ///
 /// One-electron integras (core Hamiltonian)
- trexio_exit_code trexio_read_mo_1e_int_core_hamiltonian(trexio_t* const trexio_file, double* const data);
-//
+ double* hcore =malloc((int_64_t)mo_num * mo_num * sizeof(double));
+ rc = trexio_read_mo_1e_int_core_hamiltonian(trexio_file, data);
+ if (rc != TREXIO_SUCCESS) {
+   printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
+   exit(1);
+ }
 // Reading two-electron integrals
 /// Number of non-zero integrals
- trexio_exit_code trexio_read_mo_2e_int_eri_size(trexio_t* const trexio_file, int64_t* const n_integrals);
-///
+ rc = trexio_read_mo_2e_int_eri_size(trexio_t* const trexio_file, int64_t* const n_integrals);
+ if (rc != TREXIO_SUCCESS) {
+   printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
+   exit(1);
+ }
 ///
 ///
 /// Allocate memory
@@ -64,8 +82,12 @@ int main() {
 ///
 ///
 /// Read the integrals from the file
- trexio_exit_code trexio_read_mo_2e_int_eri(trexio_t* const file, const int64_t offset_file, int64_t* const buffer_size, int32_t* const index, double* const value);
-////
+ rc = trexio_read_mo_2e_int_eri(trexio_t* const file, const int64_t offset_file, int64_t* const buffer_size, int32_t* const index, double* const value);
+ if (rc != TREXIO_SUCCESS) {
+   printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
+   exit(1);
+ }
+///
  offset_file=0
  buffer_size = n_integrals
 
