@@ -4,9 +4,9 @@
 #include <stdint.h>
 
 // Eight permutation symmetry
-double get_eri(int p, int q, int r, int s, int64_t buffer_size, const int32_t* index, const double* value) {
+double get_eri(int p, int q, int r, int s, int64_t nint, const int32_t* index, const double* value) {
 
-  for (int64_t n = 0; n < buffer_size; n++) {
+  for (int64_t n = 0; n < nint; n++) {
     int i = index[4*n + 0];
     int j = index[4*n + 1];
     int k = index[4*n + 2];
@@ -14,14 +14,14 @@ double get_eri(int p, int q, int r, int s, int64_t buffer_size, const int32_t* i
     double v = value[n];
 
     if (
-      (i==p && j==q && k==r && l==s) ||
-      (i==q && j==p && k==r && l==s) ||
-      (i==p && j==q && k==s && l==r) ||
-      (i==q && j==p && k==s && l==r) ||
-      (i==r && j==s && k==p && l==q) ||
-      (i==s && j==r && k==p && l==q) ||
-      (i==r && j==s && k==q && l==p) ||
-      (i==s && j==r && k==q && l==p)
+      (i==p && j==q && k==r && l==s) ||  // <ij|kl>
+      (i==p && l==q && k==r && j==s) ||  // <il|kj>
+      (k==p && l==q && i==r && j==s) ||  // <kl|ij>
+      (k==p && j==q && i==r && l==s) ||  // <kj|il>
+      (j==p && i==q && l==r && k==s) ||  // <ji|lk>
+      (l==p && i==q && j==r && k==s) ||  // <li|jk>
+      (l==p && k==q && j==r && i==s) ||  // <lk|ji>
+      (j==p && k==q && l==r && i==s)     // <jk|li>    		    
     ) {
       return v;
     }
@@ -42,14 +42,14 @@ int main() {
 
 
 // Reading Nuclear repulsion energy
- double energy;
- rc = trexio_read_nucleus_repulsion(trexio_file, &energy);
+ double Enn;
+ rc = trexio_read_nucleus_repulsion(trexio_file, &Enn);
  //---check the return code---
  if (rc != TREXIO_SUCCESS) {
   printf("TREXIO Error reading nuclear repulsion energy: \n%s\n", trexio_string_of_error(rc));
   exit(1);
  }
- printf("E_nn = %.10f\n", energy);
+ printf("E_nn = %.10f\n", Enn);
 
 // Obtain Number of up electrons (Nocc)
  int32_t n_up = 0;
@@ -107,21 +107,27 @@ int main() {
  printf("n_integrals read = %ld\n", (long) buffer_size);
 
 
-// Eight permutations
-int p = index[0];
-int q = index[1];
-int r = index[2];
-int s = index[3];
 
-double v_file = value[0];
+// Compute Hartree-Fock energy
+int32_t n_occ = n_up;
+double E1 = 0;
+double E2 = 0;
+/// Term first sum
+for (int32_t i = 0; i < n_occ; i++) {
+ double hii = data[(int64_t)i * mo_num + i];
+ E1 += 2.0 * hii;
+}
+/// Term second sum
+ for (int32_t i=0; i<n_occ; i++) {
+  for (int32_t j=0; j<n_occ; j++) {
+   double J = get_eri(i,j,i,j, buffer_size, index, value);
+   double K = get_eri(i,j,j,i,buffer_size, index, value);
+   E2 += (2.0 * J - K);
+ }
+}
+double E_hf = Enn + E1 + E2;
+printf("E_HF    = %.10f\n", E_hf);
 
-double v_get  = get_eri(p, q, r, s, buffer_size, index, value);
-
-printf("TEST get_eri: (%d %d | %d %d)  file=% .12e  get=% .12e  diff=% .3e\n",
-       p, q, r, s, v_file, v_get, v_get - v_file); 
-
-double v_get2 = get_eri(q, p, r, s, buffer_size, index, value);
-printf("TEST symmetry: swapped (q,p|r,s) get=% .12e\n", v_get2);
 // Close TREXIO file
  rc = trexio_close(trexio_file);
  if (rc != TREXIO_SUCCESS) {
