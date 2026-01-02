@@ -47,13 +47,13 @@ TREXIO stores MO two-electron integrals (ERIs) in a sparse representation and ex
 ### MP2 energy expression (closed-shell, MO basis)
 The MP2 correlation energy is computed as
 
-\[
+$$
 E_{\mathrm{MP2}} =
 \sum_{i,j \in \mathrm{occ}}
 \sum_{a,b \in \mathrm{virt}}
 \frac{(ij|ab)\left[2(ij|ab)-(ij|ba)\right]}
 {\varepsilon_i+\varepsilon_j-\varepsilon_a-\varepsilon_b}
-\]
+$$
 
 where \(\varepsilon_p\) are MO orbital energies and \((ij|ab)\) are ERIs in the MO basis.
 
