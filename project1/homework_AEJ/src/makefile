@@ -3,7 +3,7 @@ SRC=MP2_energy.c main.c
 CFLAGS = -I/usr/local/include
 LDFLAGS = -L/usr/local/lib
 LDLIBS = -ltrexio
-OBJ=$(patsubst %.c, %.o, $(SRC))
+OBJ=$(SRC:.c=.o)
 
 
 MP2_energy: $(OBJ)
