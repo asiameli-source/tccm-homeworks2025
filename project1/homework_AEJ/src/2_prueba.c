@@ -12,7 +12,7 @@ static void swap_int(int *a, int *b) {
 // index mapping helper
 // turn a 4-index object into one array
 static inline size_t idx_ijab(size_t i,size_t j,size_t a,size_t b,size_t n_occ,size_t n_virt){
-  return b + n_virt * a + n_virt * (j + n_occ*i);
+  return b + n_virt * (a + n_virt * (j + n_occ*i));
 }
 
 // two-electron integrals obey 8-fold permutational symmetry
@@ -172,8 +172,11 @@ int main() {
   if (i < n_occ && j < n_occ && k >= n_occ && l >= n_occ) {
     int a = k - n_occ;
     int b = l - n_occ;
-    size_t pos_ab = idx_ijab(i, j, a, b, n_occ, n_virt); // address calculation
+    size_t pos_ab = idx_ijab(i, j, a, b, n_occ, n_virt); 
+// address calculation
     G[pos_ab] += eri;
+    size_t pos_ba = idx_ijab(i, j, b, a, n_occ, n_virt);
+    G[pos_ba] += eri;
   }
     // if the same integral arrives twice, you accumulate it rather than overwrite
 //    double ijab = G[idx_ijab(i,j,a,b,n_occ,n_virt)];
@@ -222,7 +225,8 @@ printf("E_HF    = %.10f\n", E_hf);
 
 printf("Energy_MP2 = %.12f\n", energy_mp2);
 printf("E_total (HF+MP2) = %.12f\n", E_hf + energy_mp2);	
-
+printf("Check G example: G(0,0,0,1)=%.12e  G(0,0,1,0)=%.12e\n",
+       G4(0,0,0,1), G4(0,0,1,0));
 // Close TREXIO file
  rc = trexio_close(trexio_file);
  if (rc != TREXIO_SUCCESS) {

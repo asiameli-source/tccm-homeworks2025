@@ -34,7 +34,7 @@ static void canonicalize_eri(int *p, int *q, int *r, int *s) { // 'void' to rewr
 int main(){
 	// open a TREXIO file
 	trexio_exit_code rc;
-	trexio_t* trexio_file = trexio_open("../data/ch4.h5", 'r', TREXIO_AUTO, &rc);
+	trexio_t* trexio_file = trexio_open("h2o.h5", 'r', TREXIO_AUTO, &rc);
 	if(rc != TREXIO_SUCCESS){
 		printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
 		exit(1);
