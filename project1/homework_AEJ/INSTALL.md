@@ -54,7 +54,7 @@ This will automatically compile main.c and MP2_energy.c, link them against the T
 
 The program need a TREXIO input file named h2o.h5 (water molecule) in the same directory where you run the executable.
 
-### 3.1 Running the program
+### 3.2 Running the program
 
 Execute the generated mp2 binary file in the shell
 
@@ -76,5 +76,3 @@ If you receive an error saying libtrexio.so cannot be found, add the library pat
   export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
   ./MP2_energy
   ```
-
-
