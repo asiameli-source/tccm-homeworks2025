@@ -1,0 +1,14 @@
+<map id="src/main.c" name="src/main.c">
+<area shape="rect" id="Node000001" title="Hartree–Fock (HF) total energy and MP2 correlation energy from a TREXIO file." alt="" coords="183,5,273,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,72,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,33,83,76,82,71,197,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="96,79,168,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,33,160,72,157,68,211,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="193,79,263,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="231,31,231,65,225,65,225,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="313,152,383,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="240,29,332,140,328,143,236,33"/>
+<area shape="rect" id="Node000006" href="$MP2__energy_8h.html" title="Declaration of helper functions for integral retrieval." alt="" coords="339,79,451,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="256,28,356,71,354,76,254,33"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="389,106,365,142,361,139,385,103"/>
+</map>

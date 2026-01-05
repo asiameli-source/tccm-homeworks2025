@@ -1,0 +1,7 @@
+<map id="src/MP2_energy.h" name="src/MP2_energy.h">
+<area shape="rect" id="Node000001" title="Declaration of helper functions for integral retrieval." alt="" coords="73,5,208,31"/>
+<area shape="rect" id="Node000002" href="$MP2__energy_8c.html" title="Implementation of helper functions for MP2 energy calculation." alt="" coords="5,79,140,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,42,86,80,82,77,118,39"/>
+<area shape="rect" id="Node000003" href="$main_8c.html" title="Hartree–Fock (HF) total energy and MP2 correlation energy from a TREXIO file." alt="" coords="164,79,253,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,39,200,77,196,80,159,42"/>
+</map>
