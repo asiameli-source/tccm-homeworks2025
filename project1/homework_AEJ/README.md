@@ -155,9 +155,7 @@ Energy_MP2 = -0.162000251659
 E_total (HF+MP2) = -90.665126474953
 ```
 ## Authors
-Asia Meli
-Yiyi Yang
-Eloá Abreu
+Asia Meli, Yiyi Yang and Eloá Abreu. 
 
 Project for Advanced Computational Techniques, 2025.
 
