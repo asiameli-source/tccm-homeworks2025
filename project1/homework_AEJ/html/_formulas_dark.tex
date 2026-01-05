@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\color{white}
+\pagecolor{black}
+\usepackage{newunicodechar}
+  \makeatletter
+    \def\doxynewunicodechar#1#2{%
+    \@tempswafalse
+    \edef\nuc@tempa{\detokenize{#1}}%
+    \if\relax\nuc@tempa\relax
+      \nuc@emptyargerr
+    \else
+      \edef\@tempb{\expandafter\@car\nuc@tempa\@nil}%
+      \nuc@check
+      \if@tempswa
+        \@namedef{u8:\nuc@tempa}{#2}%
+      \fi
+    \fi
+  }
+  \makeatother
+  \doxynewunicodechar{⁻}{${}^{-}$}% Superscript minus
+  \doxynewunicodechar{²}{${}^{2}$}% Superscript two
+  \doxynewunicodechar{³}{${}^{3}$}% Superscript three
+
+\pagestyle{empty}
+\begin{document}
+\[
+  E_{HF} = E_{nn} + 2\sum_{i}^{occ} h_{ii} + \sum_{ij}^{occ}\left(2(ij|ij) - (ij|ji)\right)
+  \]
+\pagebreak
+
+\[
+  E_{MP2} = \sum_{ij}^{occ}\sum_{ab}^{virt} \frac{(ij|ab)\left[2(ij|ab)-(ij|ba)\right]}
+  {\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+  \]
+\pagebreak
+
+\[
+E_{HF} = E_{nn} + 2\sum_{i}^{occ} h_{ii} + \sum_{ij}^{occ}\left(2(ij|ij) - (ij|ji)\right)
+\]
+\pagebreak
+
+\[
+E_{MP2} = \sum_{ij}^{occ}\sum_{ab}^{virt} \frac{(ij|ab)\left[2(ij|ab)-(ij|ba)\right]}
+{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+\]
+\pagebreak
+
+\[ E_{MP2} = \sum \frac{num}{denom} \]
+\pagebreak
+
+\[ (pq|rs) = (qp|rs) = (pq|sr) = (qp|sr) = (rs|pq) = (sr|pq) = (rs|qp) = (sr|qp) \]
+\pagebreak
+
+$ (pq|rs) $
+\pagebreak
+
+$ (pq|rs) = (rs|pq) = (qp|rs) \dots $
+\pagebreak
+
+\end{document}
