@@ -33,6 +33,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Debug repo tree
+        run: |
+            pwd
+            ls -la
+            echo "---- find index.html ----"
+            find . -maxdepth 4 -name "index.html" -print
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
