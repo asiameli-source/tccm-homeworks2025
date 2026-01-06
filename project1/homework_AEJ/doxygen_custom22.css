@@ -1,0 +1,250 @@
+html.theme-round {
+    /* primary theme color. This will affect the entire websites color scheme: links, arrows, labels, ... */
+    
+    --primary-color: #AF7FE4;
+    --primary-dark-color: #9270E4;
+    --primary-light-color: #d2b7ef;
+    --primary-lighter-color: #cae1f1;
+    --primary-lightest-color: #e9f1f8;
+
+    /* page base colors */
+    --page-background-color: white;
+    --page-foreground-color: #2c3e50;
+    --page-secondary-foreground-color: #67727e;
+
+
+    --border-radius-large: 22px;
+    --border-radius-small: 9px;
+    --border-radius-medium: 14px;
+    --spacing-small: 8px;
+    --spacing-medium: 14px;
+    --spacing-large: 19px;
+    --spacing-xlarge: 21px;
+
+    --top-height: 125px;
+
+    --side-nav-background: #324067;
+    --side-nav-foreground: #F1FDFF;
+    --header-foreground: var(--side-nav-foreground);
+    --searchbar-background: var(--side-nav-foreground);
+    --searchbar-border-radius: var(--border-radius-medium);
+    --header-background: var(--side-nav-background);
+    --header-foreground: var(--side-nav-foreground);
+
+    --toc-background: rgb(243, 240, 252);
+    --toc-foreground: var(--page-foreground-color);
+}
+
+html.theme-round.dark-mode {
+    color-scheme: dark;
+
+    --primary-color: #AF7FE4;
+    --primary-dark-color: #715292;
+    --primary-light-color: #ae97c7;
+    --primary-lighter-color: #191e21;
+    --primary-lightest-color: #191a1c;
+
+    --page-background-color: #1C1D1F;
+    --page-foreground-color: #d2dbde;
+    --page-secondary-foreground-color: #859399;
+    --separator-color: #3a3246;
+    --side-nav-background: #171D32;
+    --side-nav-foreground: #F1FDFF;
+    --toc-background: #20142C;
+    --searchbar-background: var(--page-background-color);
+
+}
+
+
+
+/* =========================
+   PURPLE OVERRIDE (FULL)
+   Pegar al FINAL del CSS
+   ========================= */
+
+html{
+  /* Paleta morada */
+  --primary-color: #7A3F6A;
+  --primary-dark-color: #5F2F53;
+  --primary-light-color: #F3EAF1;
+
+  /* Asegura que los estados “focus/active” no usen el azul default */
+  --menu-focus-background: var(--primary-color);
+  --menu-focus-foreground: #ffffff;
+  --menu-selected-background: rgba(122,63,106,0.14);
+}
+
+/* ---------- LINKS (quitar azul) ---------- */
+a:link, a:visited{
+  color: var(--primary-color) !important;
+}
+a:hover, a:focus, a:active{
+  color: var(--primary-dark-color) !important;
+}
+
+/* ---------- TOP TABS (Main Page / Related Pages / Files) ---------- */
+/* Importante: no pintar el contenedor entero (si no, afecta al search). */
+
+.tabs, .tabs2, .tabs3, .sm-dox{
+  background: transparent !important;
+  background-image: none !important;
+}
+/* ===== BOTONES (NO SELECCIONADOS) ===== */
+#main-nav .sm-dox > ul > li:not(.current):not(.active) > a,
+#main-menu > li:not(.current):not(.active) > a,
+.tablist li:not(.current) > a{
+  background: linear-gradient(var(--primary-color), var(--primary-dark-color)) !important; /* morado normal */
+  color: #fff !important;
+  text-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Hover (un poco más oscuro) */
+#main-nav .sm-dox > ul > li:not(.current):not(.active) > a:hover,
+#main-menu > li:not(.current):not(.active) > a:hover,
+.tablist li:not(.current) > a:hover{
+  filter: brightness(0.7) !important;
+}
+
+/* ===== BOTONES (SELECCIONADOS) ===== */
+#main-nav .sm-dox > ul > li.current > a,
+#main-nav .sm-dox > ul > li.active  > a,
+#main-menu > li.current > a,
+#main-menu > li.active  > a,
+.tablist li.current > a{
+  background: linear-gradient(#9a5786, var(--primary-color)) !important; /* morado más clarito */
+  color: #fff !important;
+}
+
+/* ===== DROPDOWN Files (solo el desplegable) ===== */
+#main-menu ul, .sm-dox ul{
+  border-color: var(--separator-color) !important;
+}
+#main-menu ul a, .sm-dox ul a{
+  color: var(--page-foreground-color) !important;
+  background: var(--page-background-color) !important;
+}
+#main-menu ul a:hover, .sm-dox ul a:hover,
+#main-menu ul a:focus, .sm-dox ul a:focus,
+#main-menu ul a:active, .sm-dox ul a:active{
+  background: var(--primary-light-color) !important;
+  color: var(--primary-dark-color) !important;
+  text-shadow: none !important;
+}
+
+
+
+
+
+
+
+
+
+'''
+/* Botón de cada tab */
+#main-nav .sm-dox > ul > li > a,
+#main-menu > li > a,
+.sm-dox > li > a,
+.tablist li a{
+  background: linear-gradient(#8a4a78, var(--primary-color)) !important;
+  background-image: none !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Hover */
+#main-nav .sm-dox > ul > li > a:hover,
+#main-menu > li > a:hover,
+.sm-dox > li > a:hover,
+.tablist li a:hover{
+  background: linear-gradient(#9a5786, var(--primary-dark-color)) !important;
+  color: #ffffff !important;
+}
+
+/* Activo/seleccionado */
+#main-menu > li.current > a,
+#main-menu > li.active > a,
+.sm-dox > li.current > a,
+.sm-dox > li.active > a,
+.tablist li.current a{
+  background: linear-gradient(var(--primary-dark-color), var(--primary-color)) !important;
+  color: #ffffff !important;
+}
+
+/* Dropdown de Files */
+#main-menu ul, .sm-dox ul{
+  border-color: var(--separator-color) !important;
+}
+#main-menu ul a, .sm-dox ul a{
+  color: var(--page-foreground-color) !important;
+  background: var(--page-background-color) !important;
+}
+#main-menu ul a:hover, .sm-dox ul a:hover,
+#main-menu ul a:focus, .sm-dox ul a:focus,
+#main-menu ul a:active, .sm-dox ul a:active{
+  background: var(--primary-light-color) !important;
+  color: var(--primary-dark-color) !important;
+  text-shadow: none !important;
+}
+'''
+
+/* ---------- SIDE NAV TREE (quitar azul + selección blanca) ---------- */
+#nav-tree a, #nav-tree a:visited,
+#nav-tree a.el, #nav-tree a.el:visited,
+#nav-tree .label{
+  color: var(--side-nav-foreground) !important;
+  background: transparent !important;
+  text-shadow: none !important;
+}
+
+/* Hover en árbol */
+#nav-tree a:hover, #nav-tree a.el:hover, #nav-tree .label:hover{
+  background: var(--primary-light-color) !important;
+  color: var(--primary-dark-color) !important;
+}
+
+/* Seleccionado (fondo morado + texto blanco) */
+#nav-tree .selected,
+#nav-tree .item.selected,
+#nav-tree .selected > a,
+#nav-tree .item.selected > a,
+#nav-tree .selected a,
+#nav-tree .selected a.el,
+#nav-tree .selected a.el span,
+#nav-tree .selected .label{
+  background: var(--primary-color) !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+/* Flecha/triángulo en seleccionado (si aplica) */
+#nav-tree .selected .arrow{
+  filter: brightness(200%) !important;
+  opacity: 0.95 !important;
+}
+
+/* ---------- TABLAS (lo que suele quedarse azul) ---------- */
+/* Cabeceras típicas de Doxygen */
+table.doxtable th,
+table.fieldtable th,
+table.markdownTable th,
+th.markdownTableHeadLeft, th.markdownTableHeadRight,
+th.markdownTableHeadCenter, th.markdownTableHeadNone{
+  background: var(--primary-color) !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+/* Por si algún theme pone degradado/azul a tablas por clase */
+table.doxtable th a,
+table.fieldtable th a,
+table.markdownTable th a{
+  color: #ffffff !important;
+}
+
+
+
