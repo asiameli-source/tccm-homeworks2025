@@ -1,27 +1,38 @@
 # Installation and Compilation Instructions
 
-This project computes the Hartree-Fock energy and MP2 correlation energy using the TREXIO library.
+This project computes the Hartree-Fock energy and MP2 correction using molecular integrals stored in the TREXIO library.
+
+---
 
 ## 1. Prerequisites
 
-To compile and run this program, you must install the HDF5 library and the TREXIO library.
+To compile and run this program, you need:
+- **HDF5** with TREXIO dependency
+- **TREXIO** (tested with v2.5.0)
+- A **C compiler** 
 
-### 1.1. HDF5 Library
-TREXIO depends on HDF5. Install it via your package manager:
 
-* **Ubuntu/Debian:**
+### 1.1. Installing HDF5 Library
+
+Install it via your package manager:
+
+* **Ubuntu/Debian**:
   ```bash
   sudo apt install libhdf5-dev
   ```
-* **MACOS:**
+* **macOS** (Homebrew):
   ```bash
   brew install hdf5
   ```
 
-### 1.2. TREXIO Library (v2.5.0)
+### 1.2. Installing TREXIO (v2.5.0)
 
-You need to manually install TREXIO. Follow these steps:
-1. Download the source code: https://github.com/TREX-CoE/trexio/releases/download/v2.5.0/trexio-2.5.0.tar.gz
+You need to manually install TREXIO. 
+Steps:
+1. Download the source code: 
+```bash
+wget https://github.com/TREX-CoE/trexio/releases/download/v2.5.0/trexio-2.5.0.tar.gz
+```
 2. Unzip and install :
    ```bash
    tar -zxvf trexio-2.5.0.tar.gz
@@ -31,40 +42,49 @@ You need to manually install TREXIO. Follow these steps:
    sudo make install
    ```
    
-(This usually installs the library to /usr/local/lib and headers to /usr/local/include.)
+By default, this installs the libraries to `/usr/local/lib` and headers to `/usr/local/include`.
 
 ## 2. Compilation
-Since the project includes a makefile, you do not need to type long compiler commands.
+
+A `makefile` is provided in this project,then you do not need to type long compiler commands.
 
 1. Open your terminal in the project directory.
 
-2. Run the make command:
+2. Run:
   ```bash
   make
   ```
-This will automatically compile main.c and MP2_energy.c, link them against the TREXIO library, and generate the executable named MP2_energy.
+This compiles `main.c` and `MP2_energy.c`, link them against the TREXIO library, and generate the executable **MP2_energy**.
 
-If you need to recompile from scratch, you can run make clean followed by make.
+To rebuild from scratch, run:
+ ```bash
+ make clean
+ make
+ ```
 
-This will automatically compile main.c and MP2_energy.c, link them against the TREXIO library, and generate the executable named . 
-
-## 3. Use of program
+## 3. Running the program
 
 ### 3.1 Input file
 
-The program need a TREXIO input file named h2o.h5 (water molecule) in the same directory where you run the executable.
+The program expects a TREXIO input file named:
+```bash
+ molecule.h5
+```
+In this project, the water molecule was used as an example to compute the energy. The file is added in the same directory where the executable was runned.
 
-### 3.2 Running the program
+### 3.2 Execute
 
-Execute the generated mp2 binary file in the shell
+Execute the generated mp2 binary file:
 
   ```bash
   ./MP2_energy
   ```
+The output prints the HF energy, MP2 correlation energy, and the total HF+MP2 energy.
 
 ## 4. Correction of errors
 
-If you receive an error saying libtrexio.so cannot be found, add the library path to your environment variables before running:
+### 4.1 libtrexio.so / dynamic library not found (Linux)
+If the runtime linker cannot find TREXIO, add the library path to your environment variables before running:
 
 * **Ubuntu/Debian:**
   ```bash

@@ -1,0 +1,54 @@
+/* Modern Soft: card-like sections, subtle shadows */
+html, body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+#titlearea {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+#projectname { font-weight: 800; }
+
+#side-nav, #nav-tree {
+  background: #f8fafc !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+
+.contents {
+  max-width: 1020px;
+}
+
+div.contents > .textblock,
+div.contents > .header,
+div.contents > .memitem {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  box-shadow: 0 1px 8px rgba(15, 23, 42, 0.06);
+}
+
+div.fragment, pre.fragment {
+  background: #0b1020 !important;
+  color: #e5e7eb !important;
+  border: 1px solid #1f2937 !important;
+  border-radius: 10px;
+}
+
+div.fragment .line, pre.fragment .line {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+}
+
+table.markdownTable th {
+  background: #f1f5f9 !important;
+}
