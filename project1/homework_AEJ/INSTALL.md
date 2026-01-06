@@ -46,7 +46,7 @@ By default, this installs the libraries to `/usr/local/lib` and headers to `/usr
 
 ## 2. Compilation
 
-A `makefile` is provided in this project,then you do not need to type long compiler commands.
+A ``makefile`` is provided in this project,then you do not need to type long compiler commands.
 
 1. Open your terminal in the project directory.
 
@@ -54,7 +54,7 @@ A `makefile` is provided in this project,then you do not need to type long compi
   ```bash
   make
   ```
-This compiles `main.c` and `MP2_energy.c`, link them against the TREXIO library, and generate the executable **MP2_energy**.
+This compiles ``main.c`` and ``MP2_energy.c``, link them against the TREXIO library, and generate the executable **MP2_energy**.
 
 To rebuild from scratch, run:
  ```bash
@@ -70,7 +70,7 @@ The program expects a TREXIO input file named:
 ```bash
  molecule.h5
 ```
-In this project, the water molecule was used as an example to compute the energy. The file is added in the same directory where the executable was runned.
+In this project, the h2o.h5 (water molecule) was used as an example to compute the energy. The file is added in the same directory where the executable was runned.
 
 ### 3.2 Execute
 
