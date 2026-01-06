@@ -24,6 +24,7 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -220,37 +221,31 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>double The value of the integral \( (pq|rs) \).</dd></dl>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> <a class="code hl_function" href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a>(<span class="keywordtype">int</span> p, <span class="keywordtype">int</span> q, <span class="keywordtype">int</span> r, <span class="keywordtype">int</span> s, int64_t nint, <span class="keyword">const</span> int32_t* index, <span class="keyword">const</span> <span class="keywordtype">double</span>* value);</div>
-<div class="ttc" id="aMP2__energy_8c_html_a607403243771f7cbb192d2cfe584d3ef"><div class="ttname"><a href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a></div><div class="ttdeci">double get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value)</div><div class="ttdoc">Retrieves a specific Two-Electron Integral (ERI) considering symmetry.</div><div class="ttdef"><b>Definition</b> <a href="MP2__energy_8c_source.html#l00055">MP2_energy.c:55</a></div></div>
+<div class="ttc" id="aMP2__energy_8c_html_a607403243771f7cbb192d2cfe584d3ef"><div class="ttname"><a href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a></div><div class="ttdeci">double get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value)</div><div class="ttdoc">Retrieve a two-electron integral (ERI) from TREXIO sparse storage using 8-fold permutational symmetry...</div><div class="ttdef"><b>Definition</b> <a href="MP2__energy_8c_source.html#l00046">MP2_energy.c:46</a></div></div>
 </div><!-- fragment --><p>Retrieves a specific Two-Electron Integral (ERI) from sparse arrays.</p>
-<p>This function handles the 8-fold permutational symmetry of real ERIs: </p><p class="formulaDsp">
-\[ (pq|rs) = (qp|rs) = (pq|sr) = (qp|sr) = (rs|pq) = (sr|pq) = (rs|qp) = (sr|qp) \]
+<p>TREXIO stores electron-repulsion integrals (ERIs) in a sparse format: an array of indices (i,j,k,l) and a corresponding array of values v = &lt;ij|kl&gt;. Since ERIs satisfy 8-fold permutational symmetry, the same numerical value can be represented by any of the following equivalent index orderings:</p>
+<p class="formulaDsp">
+\[
+(ij|kl) = (ji|lk) = (il|kj) = (li|jk) = (kl|ij) = (lk|ji) = (kj|il) = (jk|li)
+\]
 </p>
-<p>The algorithm works as follows:</p>
-<p><b>Step 1: Define Permutations</b> Since we don't know which canonical version is stored in the file, we prepare all 8 possible combinations of the requested indices (p,q,r,s). </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> permutations[8][4] = {</div>
-<div class="line">{p, q, r, s}, {q, p, r, s},</div>
-<div class="line">{p, q, s, r}, {q, p, s, r},</div>
-<div class="line">{r, s, p, q}, {s, r, p, q},</div>
-<div class="line">{r, s, q, p}, {s, r, q, p}</div>
-<div class="line">};</div>
-</div><!-- fragment --><p><b>Step 2: Linear Search</b> We iterate through the sparse list of integrals. For each stored integral, we check if its indices match ANY of our 8 permutations. </p><div class="fragment"><div class="line"><span class="keywordflow">for</span> (int64_t k = 0; k &lt; nint; k++) {</div>
-<div class="line"><span class="comment">// ... check if stored indices match any permutation ...</span></div>
-<div class="line"><span class="keywordflow">if</span> (match_found) <span class="keywordflow">return</span> value[k];</div>
-<div class="line">}</div>
-</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+<p>This function performs a linear scan over the list of stored integrals and returns the value if any of the 8 symmetric permutations matches the requested (p,q,r,s). If no match is found in the current buffer, the function returns 0.0.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td>Index of the first orbital. </td></tr>
-    <tr><td class="paramname">q</td><td>Index of the second orbital. </td></tr>
-    <tr><td class="paramname">r</td><td>Index of the third orbital. </td></tr>
-    <tr><td class="paramname">s</td><td>Index of the fourth orbital. </td></tr>
-    <tr><td class="paramname">nint</td><td>Total number of integrals in the buffer. </td></tr>
-    <tr><td class="paramname">index</td><td>Pointer to the flattened index array (size 4*nint). </td></tr>
-    <tr><td class="paramname">value</td><td>Pointer to the value array (size nint). </td></tr>
+    <tr><td class="paramname">p</td><td>First orbital index. </td></tr>
+    <tr><td class="paramname">q</td><td>Second orbital index. </td></tr>
+    <tr><td class="paramname">r</td><td>Third orbital index. </td></tr>
+    <tr><td class="paramname">s</td><td>Fourth orbital index. </td></tr>
+    <tr><td class="paramname">nint</td><td>Number of integrals stored in the buffer (length of <code>value</code>, and <code>index/4</code>). </td></tr>
+    <tr><td class="paramname">index</td><td>Pointer to the flattened index array of size 4*nint: index[4*n + 0..3] = {i, j, k, l} for the n-th integral. </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the integral values array of size nint.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>double The value of the integral if found, 0.0 otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>double The ERI value for the requested indices (including symmetry matches), or 0.0 if the integral is not present in the sparse list.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Complexity is O(nint) per query because of the linear scan. This is acceptable for small systems or demonstration purposes, but can be expensive for large datasets. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="MP2__energy_8c_source.html#l00055">55</a> of file <a class="el" href="MP2__energy_8c_source.html">MP2_energy.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MP2__energy_8c_source.html#l00046">46</a> of file <a class="el" href="MP2__energy_8c_source.html">MP2_energy.c</a>.</p>
 
 </div>
 </div>

@@ -16,7 +16,15 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -95,9 +103,6 @@ $(document).ready(function(){initNavTree('energy__mp2_8c.html',''); initResizabl
   <div class="headertitle"><div class="title">energy_mp2.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>MP2 (Møller–Plesset second-order) correlation energy calculation.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
@@ -121,7 +126,9 @@ Include dependency graph for energy_mp2.c:</div>
 <area shape="poly" title=" " alt="" coords="258,28,374,71,372,76,256,33"/>
 </map>
 </div>
-</div><table class="memberdecls">
+</div>
+<p><a href="energy__mp2_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a89bc149157a5b553f0207a904b7f9d4f" id="r_a89bc149157a5b553f0207a904b7f9d4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="energy__mp2_8c.html#a89bc149157a5b553f0207a904b7f9d4f">G4</a>(i,  j,  a,  b)&#160;&#160;&#160;( G[idx_ijab((i),(j),(a),(b), n_occ, n_virt)] )</td></tr>
@@ -130,31 +137,9 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="energy__mp2_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
-<tr class="memdesc:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main function to compute the MP2 correlation energy.  <br /></td></tr>
 <tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>MP2 (Møller–Plesset second-order) correlation energy calculation. </p>
-<p>This program reads molecular orbital information and two-electron integrals from a TREXIO file and computes the MP2 correlation energy for a closed-shell system (restricted reference).</p>
-<p>The code:</p><ul>
-<li>Opens a TREXIO file (<code>h2o.h5</code>) in read-only mode.</li>
-<li>Reads the number of spin-up electrons to determine the number of occupied MOs.</li>
-<li>Reads the total number of molecular orbitals and determines the number of virtual orbitals.</li>
-<li>Reads MO energies.</li>
-<li>Reads two-electron integrals (ERI) stored in sparse format from TREXIO.</li>
-<li>Filters and stores only the required subset of integrals of type (occ,occ|virt,virt).</li>
-<li>Computes the MP2 correlation energy using the canonical MP2 expression.</li>
-</ul>
-<p>The MP2 correlation energy is computed as:  </p><p class="formulaDsp">
-<picture><source srcset="form_0_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
-E_{MP2} = \sum_{ij}^{occ} \sum_{ab}^{virt} \frac{ (ij|ab)\left[ 2(ij|ab) - (ij|ba)\right]}
-{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
-\]" src="form_0.png"/></picture>
-</p>
-<dl class="section note"><dt>Note</dt><dd>The code uses a dense 1D array to store a 4D tensor G(i,j,a,b) containing only the occupied-occupied / virtual-virtual block of ERIs.</dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Asia Meli, Yiyi yang and Eloa Abreu </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a89bc149157a5b553f0207a904b7f9d4f" name="a89bc149157a5b553f0207a904b7f9d4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89bc149157a5b553f0207a904b7f9d4f">&#9670;&#160;</a></span>G4</h2>
 
@@ -211,47 +196,7 @@ E_{MP2} = \sum_{ij}^{occ} \sum_{ab}^{virt} \frac{ (ij|ab)\left[ 2(ij|ab) - (ij|b
       </table>
 </div><div class="memdoc">
 
-<p>Main function to compute the MP2 correlation energy. </p>
-<p>Workflow: 1) Open the TREXIO file. 2) Read electron and orbital information:</p><ul>
-<li>number of spin-up electrons (n_up) -&gt; occupied orbitals for closed-shell</li>
-<li>number of molecular orbitals (mo_num)</li>
-<li>MO energies 3) Read the sparse list of two-electron integrals (ERI). 4) Store only the (occ,occ|virt,virt) block into a dense tensor G(i,j,a,b). 5) Compute the MP2 correlation energy using the canonical MP2 formula. 6) Print the result, free memory, and exit.</li>
-</ul>
-<dl class="section return"><dt>Returns</dt><dd>int Returns 0 upon successful execution. </dd></dl>
-<p>Number of spin-up electrons.</p>
-<p>Initialized to a physically impossible value to make it obvious if reading from the file fails or does not overwrite the variable.</p>
-<p>Number of occupied orbitals for a closed-shell reference.</p>
-<p>For restricted closed-shell systems, n_occ equals n_up.</p>
-<p>Number of virtual orbitals.</p>
-<p>Virtual orbitals are those above the occupied space: n_virt = mo_num - n_occ.</p>
-<p>Array of molecular orbital energies.</p>
-<p>The array is allocated with length mo_num and filled from TREXIO.</p>
-<p>Number of non-zero ERIs stored in the TREXIO file (sparse format).</p>
-<p>Allocate memory for sparse ERI storage.</p>
-<p>The integrals are stored as:</p><ul>
-<li>index: integer quadruples (i,j,k,l), stored consecutively</li>
-<li>value: corresponding floating-point integral values</li>
-</ul>
-<p>Read ERIs from TREXIO in a single batch.</p>
-<p>offset_file selects the starting point in the file (here 0), and buffer_size indicates how many integrals will be read.</p>
-<p>Allocate the dense MP2 tensor G(i,j,a,b).</p>
-<p>Only the occupied-occupied / virtual-virtual block is stored: i,j run over occupied orbitals, and a,b over virtual orbitals.</p>
-<p>Storage is in a 1D array of length n_occ*n_occ*n_virt*n_virt.</p>
-<p>Populate G tensor from the sparse ERI list.</p>
-<p>Each integral is read as (i,j,k,l)=value. The indices are canonicalized to enforce permutational symmetry, and only integrals of the form: (occ,occ|virt,virt) are stored.</p>
-<p>Virtual indices are shifted to start at 0: a = k - n_occ, b = l - n_occ.</p>
-<p>Close the TREXIO file after reading all required data.</p>
-<p>Macro for convenient access to G(i,j,a,b).</p>
-<p>a and b are virtual indices in the range 0..n_virt-1.</p>
-<p>Compute the MP2 correlation energy.</p>
-<p>Loops:</p><ul>
-<li>i,j over occupied orbitals</li>
-<li>a,b over virtual orbitals</li>
-</ul>
-<p>Denominator: eps_i + eps_j - eps_a - eps_b</p>
-<p>Numerator: (ij|ab) [ 2(ij|ab) - (ij|ba) ]</p>
-<p>Print the final MP2 correlation energy.</p>
-<p>Free allocated memory to prevent leaks.</p>
+<p class="definition">Definition at line <a class="el" href="energy__mp2_8c_source.html#l00034">34</a> of file <a class="el" href="energy__mp2_8c_source.html">energy_mp2.c</a>.</p>
 
 </div>
 </div>

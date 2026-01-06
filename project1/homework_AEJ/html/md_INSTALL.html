@@ -24,6 +24,7 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,23 +100,29 @@ $(document).ready(function(){initNavTree('md_INSTALL.html',''); initResizable();
   <div class="headertitle"><div class="title">Installation and Compilation Instructions</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> This project computes the Hartree-Fock energy and MP2 correlation energy using the TREXIO library.</p>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> This project computes the Hartree-Fock energy and MP2 correction using molecular integrals stored in the TREXIO library.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md2"></a>
 1. Prerequisites</h1>
-<p>To compile and run this program, you must install the HDF5 library and the TREXIO library.</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
-1.1. HDF5 Library</h2>
-<p>TREXIO depends on HDF5. Install it via your package manager:</p>
-<ul>
-<li><b>Ubuntu/Debian:</b> <div class="fragment"><div class="line">sudo apt install libhdf5-dev</div>
-</div><!-- fragment --></li>
-<li><b>MACOS:</b> <div class="fragment"><div class="line">brew install hdf5</div>
-</div><!-- fragment --></li>
+<p>To compile and run this program, you need:</p><ul>
+<li><b>HDF5</b> with TREXIO dependency</li>
+<li><b>TREXIO</b> (tested with v2.5.0)</li>
+<li>A <b>C compiler</b></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
-1.2. TREXIO Library (v2.5.0)</h2>
-<p>You need to manually install TREXIO. Follow these steps:</p><ol type="1">
-<li>Download the source code: <a href="https://github.com/TREX-CoE/trexio/releases/download/v2.5.0/trexio-2.5.0.tar.gz">https://github.com/TREX-CoE/trexio/releases/download/v2.5.0/trexio-2.5.0.tar.gz</a></li>
+1.1. Installing HDF5 Library</h2>
+<p>Install it via your package manager:</p>
+<ul>
+<li><b>Ubuntu/Debian</b>: <div class="fragment"><div class="line">sudo apt install libhdf5-dev</div>
+</div><!-- fragment --></li>
+<li><b>macOS</b> (Homebrew): <div class="fragment"><div class="line">brew install hdf5</div>
+</div><!-- fragment --></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md4"></a>
+1.2. Installing TREXIO (v2.5.0)</h2>
+<p>You need to manually install TREXIO. Steps:</p><ol type="1">
+<li>Download the source code: <div class="fragment"><div class="line">wget https://github.com/TREX-CoE/trexio/releases/download/v2.5.0/trexio-2.5.0.tar.gz</div>
+</div><!-- fragment --></li>
 <li>Unzip and install : <div class="fragment"><div class="line">tar -zxvf trexio-2.5.0.tar.gz</div>
 <div class="line">cd trexio-2.5.0</div>
 <div class="line">./configure</div>
@@ -123,38 +130,50 @@ $(document).ready(function(){initNavTree('md_INSTALL.html',''); initResizable();
 <div class="line">sudo make install</div>
 </div><!-- fragment --></li>
 </ol>
-<p>(This usually installs the library to /usr/local/lib and headers to /usr/local/include.)</p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<p>By default, this installs the libraries to <code>/usr/local/lib</code> and headers to <code>/usr/local/include</code>.</p>
+<h1><a class="anchor" id="autotoc_md5"></a>
 2. Compilation</h1>
-<p>Since the project includes a makefile, you do not need to type long compiler commands.</p>
+<p>A <code>makefile</code> is provided in this project,then you do not need to type long compiler commands.</p>
 <ol type="1">
 <li>Open your terminal in the project directory.</li>
-<li>Run the make command: <div class="fragment"><div class="line">make</div>
-</div><!-- fragment --> This will automatically compile <a class="el" href="main_8c.html" title="Hartree–Fock (HF) total energy and MP2 correlation energy from a TREXIO file.">main.c</a> and <a class="el" href="MP2__energy_8c.html" title="Implementation of helper functions for MP2 energy calculation.">MP2_energy.c</a>, link them against the TREXIO library, and generate the executable named MP2_energy.</li>
+<li>Run: <div class="fragment"><div class="line">make</div>
+</div><!-- fragment --> This compiles <code><a class="el" href="main_8c.html" title="Hartree–Fock (HF) total energy and MP2 correlation energy from a TREXIO file.">main.c</a></code> and <code><a class="el" href="MP2__energy_8c.html" title="Implementation of helper functions for MP2 energy calculation.">MP2_energy.c</a></code>, link them against the TREXIO library, and generate the executable <b>MP2_energy</b>.</li>
 </ol>
-<p>If you need to recompile from scratch, you can run make clean followed by make.</p>
-<p>This will automatically compile <a class="el" href="main_8c.html" title="Hartree–Fock (HF) total energy and MP2 correlation energy from a TREXIO file.">main.c</a> and <a class="el" href="MP2__energy_8c.html" title="Implementation of helper functions for MP2 energy calculation.">MP2_energy.c</a>, link them against the TREXIO library, and generate the executable named .</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
-3. Use of program</h1>
-<h2><a class="anchor" id="autotoc_md6"></a>
-3.1 Input file</h2>
-<p>The program need a TREXIO input file named h2o.h5 (water molecule) in the same directory where you run the executable.</p>
+<p>To rebuild from scratch, run: </p><div class="fragment"><div class="line">make clean</div>
+<div class="line">make</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
+3. Running the program</h1>
 <h2><a class="anchor" id="autotoc_md7"></a>
-3.2 Running the program</h2>
-<p>Execute the generated mp2 binary file in the shell</p>
+3.1 Input file</h2>
+<p>The program expects a TREXIO input file named: </p><div class="fragment"><div class="line">molecule.h5</div>
+</div><!-- fragment --><p> In this project, the h2o.h5 (water molecule) was used as an example to compute the energy. The file is added in the same directory where the executable was runned.</p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+3.2 Execute</h2>
+<p>Execute the generated mp2 binary file:</p>
 <div class="fragment"><div class="line">./MP2_energy</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
+</div><!-- fragment --><p> The output prints the HF energy, MP2 correlation energy, and the total HF+MP2 energy.</p>
+<h1><a class="anchor" id="autotoc_md9"></a>
 4. Correction of errors</h1>
-<p>If you receive an error saying libtrexio.so cannot be found, add the library path to your environment variables before running:</p>
+<h2><a class="anchor" id="autotoc_md10"></a>
+4.1 libtrexio.so / dynamic library not found (Linux)</h2>
+<p>If the runtime linker cannot find TREXIO, add the library path to your environment variables before running:</p>
 <ul>
 <li><b>Ubuntu/Debian:</b> <div class="fragment"><div class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib</div>
 <div class="line">./MP2_energy</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --> </li>
+</ul>
+<h2><a class="anchor" id="autotoc_md11"></a>
+4.2 dyld library not loaded (macOS)</h2>
+<ul>
 <li><b>MACOS:</b> <div class="fragment"><div class="line">export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib</div>
 <div class="line">./MP2_energy</div>
 </div><!-- fragment --> </li>
 </ul>
-</div></div><!-- contents -->
+<h2><a class="anchor" id="autotoc_md12"></a>
+4.3 Check that TREXIO is visible to the compiler</h2>
+<p>If compilation fails due to missing headers/libraries, verify: • headers exist in <code>/usr/local/include</code> • libraries exist in <code>/usr/local/lib</code> You can confirm with: </p><div class="fragment"><div class="line">ls /usr/local/include | grep trexio</div>
+<div class="line">ls /usr/local/lib | grep trexio</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

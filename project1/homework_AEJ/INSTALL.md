@@ -91,8 +91,19 @@ If the runtime linker cannot find TREXIO, add the library path to your environme
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
   ./MP2_energy
   ```
+### 4.2 dyld library not loaded (macOS)
 * **MACOS:**
   ```bash
   export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib
   ./MP2_energy
   ```
+### 4.3 Check that TREXIO is visible to the compiler
+
+If compilation fails due to missing headers/libraries, verify:
+	•	headers exist in ``/usr/local/include``
+	•	libraries exist in ``/usr/local/lib``
+You can confirm with:
+```bash
+ls /usr/local/include | grep trexio
+ls /usr/local/lib | grep trexio
+```

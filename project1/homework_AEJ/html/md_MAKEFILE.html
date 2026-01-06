@@ -24,6 +24,7 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,8 +100,8 @@ $(document).ready(function(){initNavTree('md_MAKEFILE.html',''); initResizable()
   <div class="headertitle"><div class="title">Makefile Configuration</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md9"></a> This project uses a standard <b>Makefile</b> to automate the compilation of the C source code and its linking against the <b>TREXIO</b> chemistry library.</p>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md13"></a> This project uses a standard <b>Makefile</b> to automate the compilation of the C source code and its linking against the <b>TREXIO</b> chemistry library.</p>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Project Information</h2>
 <ul>
 <li><b>Authors:</b> Asia Meli, Yiyi Yang, Eloá Abreu</li>
@@ -108,7 +109,7 @@ Project Information</h2>
 <li><b>Purpose:</b> Generates the <code>MP2_energy</code> executable for Hartree-Fock and MP2 calculations.</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 1. Compilation Variables</h1>
 <p>We define the necessary tools and paths to locate the external libraries.</p>
 <table class="markdownTable">
@@ -124,7 +125,7 @@ Project Information</h2>
 <td class="markdownTableBodyLeft"><b>LDLIBS</b>   </td><td class="markdownTableBodyLeft"><code>-ltrexio</code>   </td><td class="markdownTableBodyLeft">Instructs the linker to specifically link the <code>libtrexio</code> library.   </td></tr>
 </table>
 <hr  />
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 2. Source Files and Objects</h1>
 <p>The system automatically detects what needs to be compiled based on this list:</p>
 <div class="fragment"><div class="line">SRC = MP2_energy.c main.c</div>

@@ -24,6 +24,7 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -106,50 +107,34 @@ $(document).ready(function(){initNavTree('MP2__energy_8c_source.html',''); initR
 <div class="contents">
 <a href="MP2__energy_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="MP2__energy_8h.html">MP2_energy.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">   55</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a>(<span class="keywordtype">int</span> p, <span class="keywordtype">int</span> q, <span class="keywordtype">int</span> r, <span class="keywordtype">int</span> s, int64_t nint, <span class="keyword">const</span> int32_t* index, <span class="keyword">const</span> <span class="keywordtype">double</span>* value) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">// Array of the 8 possible permutations of indices (p,q,r,s)</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordtype">int</span> permutations[8][4] = {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        {p, q, r, s},</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        {q, p, r, s},</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        {p, q, s, r},</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        {q, p, s, r},</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        {r, s, p, q},</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        {s, r, p, q},</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        {r, s, q, p},</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        {s, r, q, p}</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    };</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">// Iterate through the sparse list of integrals</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">for</span> (int64_t k = 0; k &lt; nint; k++) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="comment">// Fetch the indices stored at position k</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordtype">int</span> i_stored = index[4 * k + 0];</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordtype">int</span> j_stored = index[4 * k + 1];</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordtype">int</span> k_stored = index[4 * k + 2];</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordtype">int</span> l_stored = index[4 * k + 3];</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="comment">// Check against all 8 permutations</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> m = 0; m &lt; 8; m++) {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="keywordflow">if</span> (permutations[m][0] == i_stored &amp;&amp;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                permutations[m][1] == j_stored &amp;&amp;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                permutations[m][2] == k_stored &amp;&amp;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                permutations[m][3] == l_stored) {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                <span class="keywordflow">return</span> value[k]; <span class="comment">// Match found</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment">// If not found in the list, the integral is zero (sparse format)</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">return</span> 0.0;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">   46</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a>(<span class="keywordtype">int</span> p, <span class="keywordtype">int</span> q, <span class="keywordtype">int</span> r, <span class="keywordtype">int</span> s, int64_t nint, <span class="keyword">const</span> int32_t* index, <span class="keyword">const</span> <span class="keywordtype">double</span>* value) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">for</span> (int64_t n = 0; n &lt; nint; n++) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">int</span> i = index[4*n + 0];</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">int</span> j = index[4*n + 1];</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">int</span> k = index[4*n + 2];</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">int</span> l = index[4*n + 3];</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">double</span> v = value[n];</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">if</span> (</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      (i==p &amp;&amp; j==q &amp;&amp; k==r &amp;&amp; l==s) ||  <span class="comment">// &lt;ij|kl&gt;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      (i==p &amp;&amp; l==q &amp;&amp; k==r &amp;&amp; j==s) ||  <span class="comment">// &lt;il|kj&gt;</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      (k==p &amp;&amp; l==q &amp;&amp; i==r &amp;&amp; j==s) ||  <span class="comment">// &lt;kl|ij&gt;</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      (k==p &amp;&amp; j==q &amp;&amp; i==r &amp;&amp; l==s) ||  <span class="comment">// &lt;kj|il&gt;</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      (j==p &amp;&amp; i==q &amp;&amp; l==r &amp;&amp; k==s) ||  <span class="comment">// &lt;ji|lk&gt;</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      (l==p &amp;&amp; i==q &amp;&amp; j==r &amp;&amp; k==s) ||  <span class="comment">// &lt;li|jk&gt;</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      (l==p &amp;&amp; k==q &amp;&amp; j==r &amp;&amp; i==s) ||  <span class="comment">// &lt;lk|ji&gt;</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      (j==p &amp;&amp; k==q &amp;&amp; l==r &amp;&amp; i==s)     <span class="comment">// &lt;jk|li&gt;</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    ) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">return</span> v;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">// If not found in the list, the integral is zero (sparse format) </span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
 </div>
-<div class="ttc" id="aMP2__energy_8c_html_a607403243771f7cbb192d2cfe584d3ef"><div class="ttname"><a href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a></div><div class="ttdeci">double get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value)</div><div class="ttdoc">Retrieves a specific Two-Electron Integral (ERI) considering symmetry.</div><div class="ttdef"><b>Definition</b> <a href="MP2__energy_8c_source.html#l00055">MP2_energy.c:55</a></div></div>
+<div class="ttc" id="aMP2__energy_8c_html_a607403243771f7cbb192d2cfe584d3ef"><div class="ttname"><a href="MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a></div><div class="ttdeci">double get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value)</div><div class="ttdoc">Retrieve a two-electron integral (ERI) from TREXIO sparse storage using 8-fold permutational symmetry...</div><div class="ttdef"><b>Definition</b> <a href="MP2__energy_8c_source.html#l00046">MP2_energy.c:46</a></div></div>
 <div class="ttc" id="aMP2__energy_8h_html"><div class="ttname"><a href="MP2__energy_8h.html">MP2_energy.h</a></div><div class="ttdoc">Declaration of helper functions for integral retrieval.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

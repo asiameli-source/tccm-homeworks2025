@@ -1683,9 +1683,10 @@ DISABLE_INDEX          = NO
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 GENERATE_TREEVIEW      = YES
-HTML_COLORSTYLE_HUE    = 290
-HTML_COLORSTYLE_SAT    = 150
-HTML_COLORSTYLE_GAMMA  = 80
+
+#HTML_COLORSTYLE_HUE    = 290
+#HTML_COLORSTYLE_SAT    = 150
+#HTML_COLORSTYLE_GAMMA  = 80
 
 # When both GENERATE_TREEVIEW and DISABLE_INDEX are set to YES, then the
 # FULL_SIDEBAR option determines if the side bar is limited to only the treeview

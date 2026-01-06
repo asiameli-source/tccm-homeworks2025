@@ -24,6 +24,7 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,11 +100,11 @@ $(document).ready(function(){initNavTree('md_README.html',''); initResizable(); 
   <div class="headertitle"><div class="title">Project #1 — Hartree–Fock and MP2 Energies in C using TREXIO</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md15"></a> This project implements the computation of the closed-shell Hartree–Fock (HF) total energy and the MP2 correlation energy in the molecular-orbital (MO) basis. Input data (MO one- and two-electron integrals, MO energies, electron counts, nuclear repulsion energy) are read from TREXIO files (<code>.h5</code>).</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a> This project implements the computation of the closed-shell Hartree–Fock (HF) total energy and the MP2 correlation energy in the molecular-orbital (MO) basis. Input data (MO one- and two-electron integrals, MO energies, electron counts, nuclear repulsion energy) are read from TREXIO files (<code>.h5</code>).</p>
 <p>All required quantities (one- and two-electron integrals, orbital energies, nuclear repulsion energy) are read from TREXIO (<code>.h5</code>) files.The code is written in C and links against the TREXIO C library.</p>
 <p>Project context: Advanced Computational Techniques / TCCM homework, Project #1.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Directory structure</h1>
 <ul>
 <li><code>src/</code><ul>
@@ -132,7 +133,7 @@ Directory structure</h1>
 </li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 Requirements</h1>
 <ul>
 <li>C compiler (tested with <code>gcc</code>)</li>
@@ -143,26 +144,26 @@ Requirements</h1>
 <li>Standard C libraries</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 Theory and conventions</h1>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Closed-shell orbital counting</h2>
 <p>For a closed-shell reference, the number of occupied <b>spatial</b> MOs is equal to the number of spin-up electrons:</p>
 <ul>
 <li><code>n_occ = n_up</code></li>
 <li>Virtual orbitals: <code>n_virt = mo_num - n_occ</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Two-electron integrals and symmetry</h2>
 <p>TREXIO stores MO two-electron integrals (ERIs) in a sparse representation and exploits the 8-fold permutational symmetry. Therefore, only one representative of each symmetry class is stored in the file. During computation, the code must canonicalize/reorder indices consistently so that equivalent integrals are mapped to a unique location in memory.</p>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 MP2 energy expression (closed-shell, MO basis)</h2>
 <p>The MP2 correlation energy is computed as</p>
 <p>$$ E_{\mathrm{MP2}} = \sum_{i,j \in \mathrm{occ}} \sum_{a,b \in \mathrm{virt}} \frac{(ij|ab)\left[2(ij|ab)-(ij|ba)\right]} {\varepsilon_i+\varepsilon_j-\varepsilon_a-\varepsilon_b} $$</p>
 <p>where (\varepsilon_p) are MO orbital energies and ((ij|ab)) are ERIs in the MO basis.</p>
 <p>Important implementation note: in the code, occupied indices <code>i,j</code> run over <code>[0, n_occ-1]</code>, while virtual indices <code>a,b</code> are stored as <b>shifted</b> indices <code>[0, n_virt-1]</code> corresponding to MO indices <code>[n_occ, mo_num-1]</code>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md30"></a>
 Implementation overview</h1>
 <ol type="1">
 <li>Open TREXIO file in read mode.</li>
@@ -189,7 +190,7 @@ Implementation overview</h1>
 <li>Compute HF and/or MP2 energies.</li>
 <li>Print results and free allocated memory.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 Quick usage</h1>
 <p>Typical execution is:</p>
 <ul>
@@ -205,17 +206,17 @@ Quick usage</h1>
 <div class="line">cp ../data/h2o.h5 .</div>
 <div class="line">make</div>
 <div class="line">./MP2_energy</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md32"></a>
 Limitations of the program</h1>
 <ul>
 <li>The current implementation assumes a closed-shell reference.</li>
 <li>All MP2-relevant ERIs are stored in memory as a dense array, which limits the size of systems that can be treated.</li>
 <li>No parallelization is implemented.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 Validation of the results</h1>
 <p>The computed HF and MP2 energies were validated against reference values obtained from standard quantum chemistry packages using the same basis set and molecular geometry.</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 Example output</h1>
 <p>After following the instructions in <code>install.md</code> and running the programme, the following will appear on your screen: </p><div class="fragment"><div class="line">E_nn = 9.1949655588</div>
 <div class="line">n_up = 5</div>
@@ -250,13 +251,11 @@ Example output</h1>
 <div class="line">E_HF    = -90.5031262233</div>
 <div class="line">Energy_MP2 = -0.162000251659</div>
 <div class="line">E_total (HF+MP2) = -90.665126474953</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md31"></a>
-Authors</h1>
-<h1><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md35"></a>
 Authors</h1>
 <p>Asia Meli, Yiyi Yang and Eloá Abreu.</p>
 <p>Project for Advanced Computational Techniques, 2025.</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 References</h1>
 <p>Szabo, A., &amp; Ostlund, N. S. (1982). Modern quantum chemistry : introduction to advanced electronic structure theory.</p>
 <p>Trex-CoE. (n.d.). TREXIO source code documentation. <a href="https://trex-coe.github.io/trexio/">https://trex-coe.github.io/trexio/</a></p>

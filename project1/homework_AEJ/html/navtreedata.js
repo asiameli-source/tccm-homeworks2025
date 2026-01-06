@@ -26,37 +26,40 @@ var NAVTREE =
 [
   [ "TCCM homework 1: Computation of the MP2 energy", "index.html", [
     [ "Installation and Compilation Instructions", "md_INSTALL.html", [
-      [ "1. Prerequisites", "md_INSTALL.html#autotoc_md1", [
-        [ "1.1. HDF5 Library", "md_INSTALL.html#autotoc_md2", null ],
-        [ "1.2. TREXIO Library (v2.5.0)", "md_INSTALL.html#autotoc_md3", null ]
+      [ "1. Prerequisites", "md_INSTALL.html#autotoc_md2", [
+        [ "1.1. Installing HDF5 Library", "md_INSTALL.html#autotoc_md3", null ],
+        [ "1.2. Installing TREXIO (v2.5.0)", "md_INSTALL.html#autotoc_md4", null ]
       ] ],
-      [ "2. Compilation", "md_INSTALL.html#autotoc_md4", null ],
-      [ "3. Use of program", "md_INSTALL.html#autotoc_md5", [
-        [ "3.1 Input file", "md_INSTALL.html#autotoc_md6", null ],
-        [ "3.2 Running the program", "md_INSTALL.html#autotoc_md7", null ]
+      [ "2. Compilation", "md_INSTALL.html#autotoc_md5", null ],
+      [ "3. Running the program", "md_INSTALL.html#autotoc_md6", [
+        [ "3.1 Input file", "md_INSTALL.html#autotoc_md7", null ],
+        [ "3.2 Execute", "md_INSTALL.html#autotoc_md8", null ]
       ] ],
-      [ "4. Correction of errors", "md_INSTALL.html#autotoc_md8", null ]
+      [ "4. Correction of errors", "md_INSTALL.html#autotoc_md9", [
+        [ "4.1 libtrexio.so / dynamic library not found (Linux)", "md_INSTALL.html#autotoc_md10", null ],
+        [ "4.2 dyld library not loaded (macOS)", "md_INSTALL.html#autotoc_md11", null ],
+        [ "4.3 Check that TREXIO is visible to the compiler", "md_INSTALL.html#autotoc_md12", null ]
+      ] ]
     ] ],
     [ "Makefile Configuration", "md_MAKEFILE.html", [
-      [ "1. Compilation Variables", "md_MAKEFILE.html#autotoc_md12", null ],
-      [ "2. Source Files and Objects", "md_MAKEFILE.html#autotoc_md14", null ]
+      [ "1. Compilation Variables", "md_MAKEFILE.html#autotoc_md16", null ],
+      [ "2. Source Files and Objects", "md_MAKEFILE.html#autotoc_md18", null ]
     ] ],
     [ "Project #1 — Hartree–Fock and MP2 Energies in C using TREXIO", "md_README.html", [
-      [ "Directory structure", "md_README.html#autotoc_md17", null ],
-      [ "Requirements", "md_README.html#autotoc_md19", null ],
-      [ "Theory and conventions", "md_README.html#autotoc_md21", [
-        [ "Closed-shell orbital counting", "md_README.html#autotoc_md22", null ],
-        [ "Two-electron integrals and symmetry", "md_README.html#autotoc_md23", null ],
-        [ "MP2 energy expression (closed-shell, MO basis)", "md_README.html#autotoc_md24", null ]
+      [ "Directory structure", "md_README.html#autotoc_md21", null ],
+      [ "Requirements", "md_README.html#autotoc_md23", null ],
+      [ "Theory and conventions", "md_README.html#autotoc_md25", [
+        [ "Closed-shell orbital counting", "md_README.html#autotoc_md26", null ],
+        [ "Two-electron integrals and symmetry", "md_README.html#autotoc_md27", null ],
+        [ "MP2 energy expression (closed-shell, MO basis)", "md_README.html#autotoc_md28", null ]
       ] ],
-      [ "Implementation overview", "md_README.html#autotoc_md26", null ],
-      [ "Quick usage", "md_README.html#autotoc_md27", null ],
-      [ "Limitations of the program", "md_README.html#autotoc_md28", null ],
-      [ "Validation of the results", "md_README.html#autotoc_md29", null ],
-      [ "Example output", "md_README.html#autotoc_md30", null ],
-      [ "Authors", "md_README.html#autotoc_md31", null ],
-      [ "Authors", "md_README.html#autotoc_md32", null ],
-      [ "References", "md_README.html#autotoc_md33", null ]
+      [ "Implementation overview", "md_README.html#autotoc_md30", null ],
+      [ "Quick usage", "md_README.html#autotoc_md31", null ],
+      [ "Limitations of the program", "md_README.html#autotoc_md32", null ],
+      [ "Validation of the results", "md_README.html#autotoc_md33", null ],
+      [ "Example output", "md_README.html#autotoc_md34", null ],
+      [ "Authors", "md_README.html#autotoc_md35", null ],
+      [ "References", "md_README.html#autotoc_md36", null ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],

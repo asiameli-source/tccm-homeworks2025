@@ -16,7 +16,15 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -114,10 +122,13 @@ Include dependency graph for 4_prueba.c:</div>
 <area shape="poly" title=" " alt="" coords="204,28,288,70,286,75,202,33"/>
 </map>
 </div>
-</div><table class="memberdecls">
+</div>
+<p><a href="4__prueba_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a607403243771f7cbb192d2cfe584d3ef" id="r_a607403243771f7cbb192d2cfe584d3ef"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="4__prueba_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a> (int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value)</td></tr>
+<tr class="memdesc:a607403243771f7cbb192d2cfe584d3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a specific Two-Electron Integral (ERI) from sparse arrays.  <br /></td></tr>
 <tr class="separator:a607403243771f7cbb192d2cfe584d3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="4__prueba_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
 <tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +190,31 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieves a specific Two-Electron Integral (ERI) from sparse arrays. </p>
+<p>This function searches for the integral \( (pq|rs) \) within the provided sparse lists (index and value).</p>
+<p><b>Algorithm details:</b> Since integrals are often stored exploiting 8-fold permutational symmetry (e.g., \( (pq|rs) = (rs|pq) = (qp|rs) \dots \)), this function:</p><ol type="1">
+<li>Canonicalizes the input indices <code>p, q, r, s</code>.</li>
+<li>Iterates through the <code>index</code> array to find the match.</li>
+<li>Returns the corresponding <code>value</code> if found, or 0.0 otherwise.</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>Index of the first orbital. </td></tr>
+    <tr><td class="paramname">q</td><td>Index of the second orbital. </td></tr>
+    <tr><td class="paramname">r</td><td>Index of the third orbital. </td></tr>
+    <tr><td class="paramname">s</td><td>Index of the fourth orbital. </td></tr>
+    <tr><td class="paramname">nint</td><td>Total number of non-zero integrals stored (buffer size). </td></tr>
+    <tr><td class="paramname">index</td><td>Pointer to the flat array containing index quadruplets (size: <code>4*nint</code>). </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the array containing integral values (size: <code>nint</code>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double The value of the integral \( (pq|rs) \).</dd></dl>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> <a class="code hl_function" href="4__prueba_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a>(<span class="keywordtype">int</span> p, <span class="keywordtype">int</span> q, <span class="keywordtype">int</span> r, <span class="keywordtype">int</span> s, int64_t nint, <span class="keyword">const</span> int32_t* index, <span class="keyword">const</span> <span class="keywordtype">double</span>* value);</div>
+<div class="ttc" id="a4__prueba_8c_html_a607403243771f7cbb192d2cfe584d3ef"><div class="ttname"><a href="4__prueba_8c.html#a607403243771f7cbb192d2cfe584d3ef">get_eri</a></div><div class="ttdeci">double get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value)</div><div class="ttdoc">Retrieves a specific Two-Electron Integral (ERI) from sparse arrays.</div><div class="ttdef"><b>Definition</b> <a href="4__prueba_8c_source.html#l00008">4_prueba.c:8</a></div></div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="4__prueba_8c_source.html#l00008">8</a> of file <a class="el" href="4__prueba_8c_source.html">4_prueba.c</a>.</p>
+
 </div>
 </div>
 <a id="ae66f6b31b5ad750f1fe042a706a4e3d4" name="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
@@ -202,6 +238,8 @@ Functions</h2></td></tr>
 <p>Read the integrals from the file</p>
 <p>Term first sum</p>
 <p>Term second sum</p>
+
+<p class="definition">Definition at line <a class="el" href="4__prueba_8c_source.html#l00033">33</a> of file <a class="el" href="4__prueba_8c_source.html">4_prueba.c</a>.</p>
 
 </div>
 </div>
