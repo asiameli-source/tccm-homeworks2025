@@ -77,6 +77,7 @@ In this project, the h2o.h5 (water molecule) was used as an example to compute t
 Execute the generated mp2 binary file:
 
   ```bash
+  make
   ./MP2_energy
   ```
 The output prints the HF energy, MP2 correlation energy, and the total HF+MP2 energy.
