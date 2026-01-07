@@ -150,9 +150,9 @@ mo_energies:
  eps[22] = 3.8660278118
  eps[23] = 4.1475335982
 n_integrals read = 13458
-E_HF    = -90.5031262233
-Energy_MP2 = -0.162000251659
-E_total (HF+MP2) = -90.665126474953
+E_HF    = -76.0267987082
+Energy_MP2 = -0.203959974098
+E_total (HF+MP2) = -76.230758682348
 ```
 ## Authors
 Asia Meli, Yiyi Yang and Eloá Abreu. 
