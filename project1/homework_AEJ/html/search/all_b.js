@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['file_0',['3.1 Input file',['../md_INSTALL.html#autotoc_md7',1,'']]],
-  ['files_20and_20objects_1',['2. Source Files and Objects',['../md_MAKEFILE.html#autotoc_md18',1,'']]],
-  ['found_20linux_2',['4.1 libtrexio.so / dynamic library not found (Linux)',['../md_INSTALL.html#autotoc_md10',1,'']]]
+  ['get_5feri_0',['get_eri',['../MP2__energy_8c.html#a607403243771f7cbb192d2cfe584d3ef',1,'get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value):&#160;MP2_energy.c'],['../MP2__energy_8h.html#a607403243771f7cbb192d2cfe584d3ef',1,'get_eri(int p, int q, int r, int s, int64_t nint, const int32_t *index, const double *value):&#160;MP2_energy.c']]]
 ];

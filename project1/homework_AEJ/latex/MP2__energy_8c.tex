@@ -1,0 +1,87 @@
+\doxysection{src/\+MP2\+\_\+energy.c File Reference}
+\hypertarget{MP2__energy_8c}{}\label{MP2__energy_8c}\index{src/MP2\_energy.c@{src/MP2\_energy.c}}
+
+
+Implementation of helper functions for MP2 energy calculation.  
+
+
+{\ttfamily \#include "{}MP2\+\_\+energy.\+h"{}}\newline
+Include dependency graph for MP2\+\_\+energy.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{MP2__energy_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\+\_\+eri}} (int p, int q, int r, int s, int64\+\_\+t nint, const int32\+\_\+t \texorpdfstring{$\ast$}{*}index, const double \texorpdfstring{$\ast$}{*}value)
+\begin{DoxyCompactList}\small\item\em Retrieve a two-\/electron integral (ERI) from TREXIO sparse storage using 8-\/fold permutational symmetry. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of helper functions for MP2 energy calculation. 
+
+This file contains the logic to handle the retrieval of Two-\/\+Electron Integrals (ERIs) from the sparse data structures provided by TREXIO.
+
+\begin{DoxyAuthor}{Author}
+Asia Meli, Yiyi Yang and Eloá Abreu 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025 
+\end{DoxyDate}
+
+
+Definition in file \mbox{\hyperlink{MP2__energy_8c_source}{MP2\+\_\+energy.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}\label{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef} 
+\index{MP2\_energy.c@{MP2\_energy.c}!get\_eri@{get\_eri}}
+\index{get\_eri@{get\_eri}!MP2\_energy.c@{MP2\_energy.c}}
+\doxysubsubsection{\texorpdfstring{get\_eri()}{get\_eri()}}
+{\footnotesize\ttfamily double get\+\_\+eri (\begin{DoxyParamCaption}\item[{int}]{p,  }\item[{int}]{q,  }\item[{int}]{r,  }\item[{int}]{s,  }\item[{int64\+\_\+t}]{nint,  }\item[{const int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{index,  }\item[{const double \texorpdfstring{$\ast$}{*}}]{value }\end{DoxyParamCaption})}
+
+
+
+Retrieve a two-\/electron integral (ERI) from TREXIO sparse storage using 8-\/fold permutational symmetry. 
+
+Retrieves a specific Two-\/\+Electron Integral (ERI) from sparse arrays.
+
+TREXIO stores electron-\/repulsion integrals (ERIs) in a sparse format\+: an array of indices (i,j,k,l) and a corresponding array of values v = \texorpdfstring{$<$}{<}ij\texorpdfstring{$\vert$}{|}kl\texorpdfstring{$>$}{>}. Since ERIs satisfy 8-\/fold permutational symmetry, the same numerical value can be represented by any of the following equivalent index orderings\+:
+
+\[
+(ij|kl) = (ji|lk) = (il|kj) = (li|jk) = (kl|ij) = (lk|ji) = (kj|il) = (jk|li)
+\]
+
+This function performs a linear scan over the list of stored integrals and returns the value if any of the 8 symmetric permutations matches the requested (p,q,r,s). If no match is found in the current buffer, the function returns 0.\+0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & First orbital index. \\
+\hline
+{\em q} & Second orbital index. \\
+\hline
+{\em r} & Third orbital index. \\
+\hline
+{\em s} & Fourth orbital index. \\
+\hline
+{\em nint} & Number of integrals stored in the buffer (length of {\ttfamily value}, and {\ttfamily index/4}). \\
+\hline
+{\em index} & Pointer to the flattened index array of size 4\texorpdfstring{$\ast$}{*}nint\+: index\mbox{[}4\texorpdfstring{$\ast$}{*}n + 0..3\mbox{]} = \{i, j, k, l\} for the n-\/th integral. \\
+\hline
+{\em value} & Pointer to the integral values array of size nint.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The ERI value for the requested indices (including symmetry matches), or 0.\+0 if the integral is not present in the sparse list.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Complexity is O(nint) per query because of the linear scan. This is acceptable for small systems or demonstration purposes, but can be expensive for large datasets. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{MP2__energy_8c_source_l00046}{46}} of file \mbox{\hyperlink{MP2__energy_8c_source}{MP2\+\_\+energy.\+c}}.
+

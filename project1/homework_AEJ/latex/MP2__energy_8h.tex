@@ -1,0 +1,127 @@
+\doxysection{src/\+MP2\+\_\+energy.h File Reference}
+\hypertarget{MP2__energy_8h}{}\label{MP2__energy_8h}\index{src/MP2\_energy.h@{src/MP2\_energy.h}}
+
+
+Declaration of helper functions for integral retrieval.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+Include dependency graph for MP2\+\_\+energy.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{MP2__energy_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{MP2__energy_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{MP2__energy_8h_a607403243771f7cbb192d2cfe584d3ef}{get\+\_\+eri}} (int p, int q, int r, int s, int64\+\_\+t nint, const int32\+\_\+t \texorpdfstring{$\ast$}{*}index, const double \texorpdfstring{$\ast$}{*}value)
+\begin{DoxyCompactList}\small\item\em Retrieves a specific Two-\/\+Electron Integral (ERI) from sparse arrays. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declaration of helper functions for integral retrieval. 
+
+This header defines the interface for accessing two-\/electron integrals (ERIs) stored in sparse formats, handling the necessary symmetry index permutations.
+
+\begin{DoxyDate}{Date}
+2025 
+\end{DoxyDate}
+
+
+Definition in file \mbox{\hyperlink{MP2__energy_8h_source}{MP2\+\_\+energy.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{MP2__energy_8h_a607403243771f7cbb192d2cfe584d3ef}\label{MP2__energy_8h_a607403243771f7cbb192d2cfe584d3ef} 
+\index{MP2\_energy.h@{MP2\_energy.h}!get\_eri@{get\_eri}}
+\index{get\_eri@{get\_eri}!MP2\_energy.h@{MP2\_energy.h}}
+\doxysubsubsection{\texorpdfstring{get\_eri()}{get\_eri()}}
+{\footnotesize\ttfamily double get\+\_\+eri (\begin{DoxyParamCaption}\item[{int}]{p,  }\item[{int}]{q,  }\item[{int}]{r,  }\item[{int}]{s,  }\item[{int64\+\_\+t}]{nint,  }\item[{const int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{index,  }\item[{const double \texorpdfstring{$\ast$}{*}}]{value }\end{DoxyParamCaption})}
+
+
+
+Retrieves a specific Two-\/\+Electron Integral (ERI) from sparse arrays. 
+
+This function searches for the integral $ (pq|rs) $ within the provided sparse lists (index and value).
+
+{\bfseries{Algorithm details\+:}} Since integrals are often stored exploiting 8-\/fold permutational symmetry (e.\+g., $ (pq|rs) = (rs|pq) = (qp|rs) \dots $), this function\+:
+\begin{DoxyEnumerate}
+\item Canonicalizes the input indices {\ttfamily p, q, r, s}.
+\item Iterates through the {\ttfamily index} array to find the match.
+\item Returns the corresponding {\ttfamily value} if found, or 0.\+0 otherwise.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Index of the first orbital. \\
+\hline
+{\em q} & Index of the second orbital. \\
+\hline
+{\em r} & Index of the third orbital. \\
+\hline
+{\em s} & Index of the fourth orbital. \\
+\hline
+{\em nint} & Total number of non-\/zero integrals stored (buffer size). \\
+\hline
+{\em index} & Pointer to the flat array containing index quadruplets (size\+: {\ttfamily 4\texorpdfstring{$\ast$}{*}nint}). \\
+\hline
+{\em value} & Pointer to the array containing integral values (size\+: {\ttfamily nint}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The value of the integral $ (pq|rs) $.
+\end{DoxyReturn}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{double}\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(\textcolor{keywordtype}{int}\ p,\ \textcolor{keywordtype}{int}\ q,\ \textcolor{keywordtype}{int}\ r,\ \textcolor{keywordtype}{int}\ s,\ int64\_t\ nint,\ \textcolor{keyword}{const}\ int32\_t*\ index,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ value);}
+
+\end{DoxyCode}
+
+
+Retrieves a specific Two-\/\+Electron Integral (ERI) from sparse arrays.
+
+TREXIO stores electron-\/repulsion integrals (ERIs) in a sparse format\+: an array of indices (i,j,k,l) and a corresponding array of values v = \texorpdfstring{$<$}{<}ij\texorpdfstring{$\vert$}{|}kl\texorpdfstring{$>$}{>}. Since ERIs satisfy 8-\/fold permutational symmetry, the same numerical value can be represented by any of the following equivalent index orderings\+:
+
+\[
+(ij|kl) = (ji|lk) = (il|kj) = (li|jk) = (kl|ij) = (lk|ji) = (kj|il) = (jk|li)
+\]
+
+This function performs a linear scan over the list of stored integrals and returns the value if any of the 8 symmetric permutations matches the requested (p,q,r,s). If no match is found in the current buffer, the function returns 0.\+0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & First orbital index. \\
+\hline
+{\em q} & Second orbital index. \\
+\hline
+{\em r} & Third orbital index. \\
+\hline
+{\em s} & Fourth orbital index. \\
+\hline
+{\em nint} & Number of integrals stored in the buffer (length of {\ttfamily value}, and {\ttfamily index/4}). \\
+\hline
+{\em index} & Pointer to the flattened index array of size 4\texorpdfstring{$\ast$}{*}nint\+: index\mbox{[}4\texorpdfstring{$\ast$}{*}n + 0..3\mbox{]} = \{i, j, k, l\} for the n-\/th integral. \\
+\hline
+{\em value} & Pointer to the integral values array of size nint.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The ERI value for the requested indices (including symmetry matches), or 0.\+0 if the integral is not present in the sparse list.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Complexity is O(nint) per query because of the linear scan. This is acceptable for small systems or demonstration purposes, but can be expensive for large datasets. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{MP2__energy_8c_source_l00046}{46}} of file \mbox{\hyperlink{MP2__energy_8c_source}{MP2\+\_\+energy.\+c}}.
+

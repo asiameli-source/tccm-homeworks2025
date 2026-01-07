@@ -2,7 +2,7 @@
 
 This project implements the computation of the closed-shell Hartree–Fock (HF) total energy and the MP2 correlation energy in the molecular-orbital (MO) basis. Input data (MO one- and two-electron integrals, MO energies, electron counts, nuclear repulsion energy) are read from TREXIO files (`.h5`).
 
-All required quantities (one- and two-electron integrals, orbital energies, nuclear repulsion energy) are read from TREXIO (`.h5`) files.The code is written in C and links against the TREXIO C library.
+The code is written in C and links against the TREXIO C library.
 
 Project context: Advanced Computational Techniques / TCCM homework, Project #1.
 
@@ -14,12 +14,13 @@ Project context: Advanced Computational Techniques / TCCM homework, Project #1.
   - `main.c`  
   Main program. Reads data from a TREXIO file, computes the Hartree–Fock
   energy and the MP2 correlation energy, and prints the results.
-  - `energy_hf.c` — HF energy evaluation (closed-shell)
-  - `energy_mp2.c` — MP2 correlation energy evaluation (closed-shell).
-   `makefile`  
+  - `MP2_energy.c`  
+  External function that handles the symmetry of the two-electron integrals during the computations.
+  - `MP2_energy.h`
+  Header file defining the helper interface for ERI retrieval from TREXIO sparse arrays (index + value).
+  Declares utility routines to handle ERI index permutations (8-fold symmetry) and to query specific integrals \f$\langle pq|rs\rangle\f$ needed in HF/MP2. 
+  - `makefile`  
   Compilation rules and linking against the TREXIO library.
-Note: additional source files present in the repository are not used in the
-final build and correspond to previous development or testing stages.
 - `data/`
   - `*.h5` — TREXIO datasets provided for testing (e.g., `h2o.h5`, `ch4.h5`, ...)
 - `INSTALL.md`
@@ -51,18 +52,39 @@ For a closed-shell reference, the number of occupied **spatial** MOs is equal to
 ### Two-electron integrals and symmetry
 TREXIO stores MO two-electron integrals (ERIs) in a sparse representation and exploits the 8-fold permutational symmetry. Therefore, only one representative of each symmetry class is stored in the file. During computation, the code must canonicalize/reorder indices consistently so that equivalent integrals are mapped to a unique location in memory.
 
-### MP2 energy expression (closed-shell, MO basis)
+### Hartree–Fock total energy
+The Hartree–Fock total energy is computed as:
+
+\f[
+E_{\mathrm{HF}} = E_{\mathrm{NN}}
++ 2 \sum_{i \in \mathrm{occ}} \langle i|h|i\rangle
++ \sum_{i \in \mathrm{occ}} \sum_{j \in \mathrm{occ}}
+\left[ 2\langle ij|ij\rangle - \langle ij|ji\rangle \right]
+\f]
+
+where:
+- \f$E_{\mathrm{NN}}\f$ is the nuclear repulsion energy,
+- \f$\langle i|h|i\rangle\f$ are matrix elements of the one-electron Hamiltonian, with \f$h = T + V_{\mathrm{ne}}\f$,
+- \f$\langle ij|kl\rangle\f$ are two-electron Coulomb integrals in the MO basis,
+- indices \f$i,j\f$ run over occupied spatial orbitals (\f$i,j \in \mathrm{occ}\f$).
+
+Implementation note: in the code, occupied indices `i,j` correspond to MO indices `[0, n_occ-1]` (0-based indexing).
+
+### MP2 energy expression
 The MP2 correlation energy is computed as
 
-$$
+\f[
 E_{\mathrm{MP2}} =
 \sum_{i,j \in \mathrm{occ}}
 \sum_{a,b \in \mathrm{virt}}
-\frac{(ij|ab)\left[2(ij|ab)-(ij|ba)\right]}
-{\varepsilon_i+\varepsilon_j-\varepsilon_a-\varepsilon_b}
-$$
+\frac{\langle ij|ab\rangle \left[2\langle ij|ab\rangle - \langle ij|ba\rangle\right]}
+{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+\f]
 
-where \(\varepsilon_p\) are MO orbital energies and \((ij|ab)\) are ERIs in the MO basis.
+where:
+- \f$\varepsilon_p\f$ are MO orbital energies,
+- \f$\langle ij|ab\rangle\f$ are two-electron repulsion integrals (ERIs) in the MO basis,
+- indices \f$i,j\f$ run over occupied orbitals (\f$i,j \in \mathrm{occ}\f$) and \f$a,b\f$ run over virtual orbitals (\f$a,b \in \mathrm{virt}\f$).
 
 Important implementation note: in the code, occupied indices `i,j` run over `[0, n_occ-1]`, while virtual indices `a,b` are stored as **shifted** indices `[0, n_virt-1]` corresponding to MO indices `[n_occ, mo_num-1]`.
 
@@ -70,38 +92,43 @@ Important implementation note: in the code, occupied indices `i,j` run over `[0,
 
 ## Implementation overview
 
-1. Open TREXIO file in read mode.
-2. Read scalars:
-   - `electron_up_num` → `n_occ`
-   - `mo_num` → number of MOs
-   - (for HF) `nucleus_repulsion` → \(E_{NN}\)
-3. Allocate arrays:
-   - `mo_energy[mo_num]`
-   - `h_core[mo_num * mo_num]` (if needed for HF)
-   - MP2 ERI block `G[n_occ*n_occ*n_virt*n_virt]` (dense 1D array)
-4. Read data from TREXIO:
-   - MO energies
-   - one-electron integrals (HF)
-   - sparse ERIs (indices + values)
-5. Canonicalize ERI indices and store only the MP2-relevant block `(occ,occ|virt,virt)` into `G`.
-6. Close TREXIO (after everything is copied into RAM).
-7. Compute HF and/or MP2 energies.
-8. Print results and free allocated memory.
+1.  Open TREXIO file in read mode
+2.  Read the nuclear repulsion energy \(E_{NN}\)
+3.  Determine the occupied space
+    - read the number of spin-up electrons;
+4.  Read the MO dimension and define the virtual space
+    - MO numbers
+    - compute number of virtual orbitals
+5.  Read MO orbital energies
+    - allocate
+6.  Read one-electron integrals (core Hamiltonian, MO basis)
+    - allocate the dense matrix
+7.  Read sparse two-electron integrals (ERIs)
+    - read the number of stored ERIs
+    - allocate sparse buffers
+    - read the ERI block
+8.  ERI access via 'get_eri(...)' function
+9.  Compute the closed-shell Hartree-Fock total energy
+10. Compute the MP2 correlation energy
+11. Print, close and free
+    - print 'E_hf', 'E_MP2' and 'E_hf + E_MP2'
+    - Close TREXIO file
+    - Free heap allocations
 
 ## Quick usage
 
 Typical execution is:
 
-- compile the code using `make` or `gcc` (see `INSTALL.md`)
+- compile the code using `make` (see `INSTALL.md`)
 - run by providing a dataset path, e.g.
   - `../data/h2o.h5`
   - `../data/ch4.h5`
+  - etc ...
 
-If your program expects a specific input file name (default is usually `h2o.h5`), ensure this file is present in the current directory where you execute the binary.
+If your program expects a specific input file name (default is usually `h2o.h5`), ensure this file is present in the right directory where you execute the binary.
 
 ```bash
 # Example if the file is hardcoded
-cp ../data/h2o.h5 .
 make
 ./MP2_energy
 ```
@@ -114,8 +141,7 @@ make
 
 ## Validation of the results
 The computed HF and MP2 energies were validated against reference values
-obtained from standard quantum chemistry packages using the same basis set
-and molecular geometry.
+given by README.org with the expected energies.
 
 ## Example output
 After following the instructions in `install.md` and running the programme, the following will appear on your screen:
@@ -164,8 +190,6 @@ Szabo, A., & Ostlund, N. S. (1982). Modern quantum chemistry : introduction to
 
 Trex-CoE. (n.d.). TREXIO source code documentation. https://trex-coe.github.io/trexio/
 
-The HDF Group - ensuring long-term access and usability of HDF data and supporting users of HDF technologies. (2024, October 16). The HDF5® Library & File Format - The HDF Group - ensuring long-term access and usability of HDF data and supporting users of HDF technologies. The HDF Group - Ensuring Long-term Access and Usability of HDF Data and Supporting Users of HDF Technologies. https://www.hdfgroup.org/solutions/hdf5/
-
 Doxygen homepage. (n.d.). https://www.doxygen.nl/
 
-
+ChaGPT for any doubts, understand C syntax, diagnose compilation/linking/runtime issues, as a support tool to clarify both theoretical and practical espects of the implementation, assist in drafting and structuring the repository documentation 

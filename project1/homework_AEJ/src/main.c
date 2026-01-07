@@ -53,7 +53,7 @@ int main() {
   * }
   * @endcode
   */
- trexio_t* trexio_file = trexio_open("h2o.h5", 'r', TREXIO_AUTO, &rc);
+ trexio_t* trexio_file = trexio_open("../data/h2o.h5", 'r', TREXIO_AUTO, &rc);
  if (rc != TREXIO_SUCCESS) {
    printf("TREXIO Error: %s\n", trexio_string_of_error(rc));
    exit(1);

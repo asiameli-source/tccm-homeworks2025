@@ -51,15 +51,16 @@ var NAVTREE =
       [ "Theory and conventions", "md_README.html#autotoc_md25", [
         [ "Closed-shell orbital counting", "md_README.html#autotoc_md26", null ],
         [ "Two-electron integrals and symmetry", "md_README.html#autotoc_md27", null ],
-        [ "MP2 energy expression (closed-shell, MO basis)", "md_README.html#autotoc_md28", null ]
+        [ "Hartree–Fock total energy", "md_README.html#autotoc_md28", null ],
+        [ "MP2 energy expression", "md_README.html#autotoc_md29", null ]
       ] ],
-      [ "Implementation overview", "md_README.html#autotoc_md30", null ],
-      [ "Quick usage", "md_README.html#autotoc_md31", null ],
-      [ "Limitations of the program", "md_README.html#autotoc_md32", null ],
-      [ "Validation of the results", "md_README.html#autotoc_md33", null ],
-      [ "Example output", "md_README.html#autotoc_md34", null ],
-      [ "Authors", "md_README.html#autotoc_md35", null ],
-      [ "References", "md_README.html#autotoc_md36", null ]
+      [ "Implementation overview", "md_README.html#autotoc_md31", null ],
+      [ "Quick usage", "md_README.html#autotoc_md32", null ],
+      [ "Limitations of the program", "md_README.html#autotoc_md33", null ],
+      [ "Validation of the results", "md_README.html#autotoc_md34", null ],
+      [ "Example output", "md_README.html#autotoc_md35", null ],
+      [ "Authors", "md_README.html#autotoc_md36", null ],
+      [ "References", "md_README.html#autotoc_md37", null ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],

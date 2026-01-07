@@ -1,6 +1,6 @@
 # Installation and Compilation Instructions
 
-This project computes the Hartree-Fock energy and MP2 correction using molecular integrals stored in the TREXIO library.
+This project computes the Hartree-Fock energy and MP2 correction for a closed shell system using molecular integrals stored in the TREXIO library.
 
 ---
 
@@ -77,6 +77,7 @@ In this project, the h2o.h5 (water molecule) was used as an example to compute t
 Execute the generated mp2 binary file:
 
   ```bash
+  cd src
   make
   ./MP2_energy
   ```

@@ -24,7 +24,6 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -100,7 +99,7 @@ $(document).ready(function(){initNavTree('md_INSTALL.html',''); initResizable();
   <div class="headertitle"><div class="title">Installation and Compilation Instructions</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> This project computes the Hartree-Fock energy and MP2 correction using molecular integrals stored in the TREXIO library.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> This project computes the Hartree-Fock energy and MP2 correction for a closed shell system using molecular integrals stored in the TREXIO library.</p>
 <hr  />
 <h1><a class="anchor" id="autotoc_md2"></a>
 1. Prerequisites</h1>
@@ -150,7 +149,9 @@ $(document).ready(function(){initNavTree('md_INSTALL.html',''); initResizable();
 <h2><a class="anchor" id="autotoc_md8"></a>
 3.2 Execute</h2>
 <p>Execute the generated mp2 binary file:</p>
-<div class="fragment"><div class="line">./MP2_energy</div>
+<div class="fragment"><div class="line">cd src</div>
+<div class="line">make</div>
+<div class="line">./MP2_energy</div>
 </div><!-- fragment --><p> The output prints the HF energy, MP2 correlation energy, and the total HF+MP2 energy.</p>
 <h1><a class="anchor" id="autotoc_md9"></a>
 4. Correction of errors</h1>

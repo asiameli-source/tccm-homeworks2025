@@ -1,0 +1,119 @@
+\chapter{Installation and Compilation Instructions}
+\hypertarget{md_INSTALL}{}\label{md_INSTALL}\index{Installation and Compilation Instructions@{Installation and Compilation Instructions}}
+\label{md_INSTALL_autotoc_md0}%
+\Hypertarget{md_INSTALL_autotoc_md0}%
+ This project computes the Hartree-\/\+Fock energy and MP2 correction for a closed shell system using molecular integrals stored in the TREXIO library.
+
+\DoxyHorRuler{0}
+\hypertarget{md_INSTALL_autotoc_md2}{}\doxysection{\texorpdfstring{1. Prerequisites}{1. Prerequisites}}\label{md_INSTALL_autotoc_md2}
+To compile and run this program, you need\+:
+\begin{DoxyItemize}
+\item {\bfseries{HDF5}} with TREXIO dependency
+\item {\bfseries{TREXIO}} (tested with v2.\+5.\+0)
+\item A {\bfseries{C compiler}}
+\end{DoxyItemize}\hypertarget{md_INSTALL_autotoc_md3}{}\doxysubsection{\texorpdfstring{1.\+1. Installing HDF5 Library}{1.1. Installing HDF5 Library}}\label{md_INSTALL_autotoc_md3}
+Install it via your package manager\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Ubuntu/\+Debian}}\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ apt\ install\ libhdf5-\/dev}
+
+\end{DoxyCode}
+
+\item {\bfseries{mac\+OS}} (Homebrew)\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{brew\ install\ hdf5}
+
+\end{DoxyCode}
+
+\end{DoxyItemize}\hypertarget{md_INSTALL_autotoc_md4}{}\doxysubsection{\texorpdfstring{1.\+2. Installing TREXIO (v2.\+5.\+0)}{1.2. Installing TREXIO (v2.5.0)}}\label{md_INSTALL_autotoc_md4}
+You need to manually install TREXIO. Steps\+:
+\begin{DoxyEnumerate}
+\item Download the source code\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{wget\ https://github.com/TREX-\/CoE/trexio/releases/download/v2.5.0/trexio-\/2.5.0.tar.gz}
+
+\end{DoxyCode}
+
+\item Unzip and install \+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{tar\ -\/zxvf\ trexio-\/2.5.0.tar.gz}
+\DoxyCodeLine{cd\ trexio-\/2.5.0}
+\DoxyCodeLine{./configure}
+\DoxyCodeLine{make}
+\DoxyCodeLine{sudo\ make\ install}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}
+
+By default, this installs the libraries to {\ttfamily /usr/local/lib} and headers to {\ttfamily /usr/local/include}.\hypertarget{md_INSTALL_autotoc_md5}{}\doxysection{\texorpdfstring{2. Compilation}{2. Compilation}}\label{md_INSTALL_autotoc_md5}
+A {\ttfamily makefile} is provided in this project,then you do not need to type long compiler commands.
+
+
+\begin{DoxyEnumerate}
+\item Open your terminal in the project directory.
+\item Run\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make}
+
+\end{DoxyCode}
+ This compiles {\ttfamily \doxylink{main_8c}{main.\+c}} and {\ttfamily \doxylink{MP2__energy_8c}{MP2\+\_\+energy.\+c}}, link them against the TREXIO library, and generate the executable {\bfseries{MP2\+\_\+energy}}.
+\end{DoxyEnumerate}
+
+To rebuild from scratch, run\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make\ clean}
+\DoxyCodeLine{make}
+
+\end{DoxyCode}
+\hypertarget{md_INSTALL_autotoc_md6}{}\doxysection{\texorpdfstring{3. Running the program}{3. Running the program}}\label{md_INSTALL_autotoc_md6}
+\hypertarget{md_INSTALL_autotoc_md7}{}\doxysubsection{\texorpdfstring{3.\+1 Input file}{3.1 Input file}}\label{md_INSTALL_autotoc_md7}
+The program expects a TREXIO input file named\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{molecule.h5}
+
+\end{DoxyCode}
+ In this project, the h2o.\+h5 (water molecule) was used as an example to compute the energy. The file is added in the same directory where the executable was runned.\hypertarget{md_INSTALL_autotoc_md8}{}\doxysubsection{\texorpdfstring{3.\+2 Execute}{3.2 Execute}}\label{md_INSTALL_autotoc_md8}
+Execute the generated mp2 binary file\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ src}
+\DoxyCodeLine{make}
+\DoxyCodeLine{./MP2\_energy}
+
+\end{DoxyCode}
+ The output prints the HF energy, MP2 correlation energy, and the total HF+\+MP2 energy.\hypertarget{md_INSTALL_autotoc_md9}{}\doxysection{\texorpdfstring{4. Correction of errors}{4. Correction of errors}}\label{md_INSTALL_autotoc_md9}
+\hypertarget{md_INSTALL_autotoc_md10}{}\doxysubsection{\texorpdfstring{4.\+1 libtrexio.\+so / dynamic library not found (\+Linux)}{4.1 libtrexio.so / dynamic library not found (Linux)}}\label{md_INSTALL_autotoc_md10}
+If the runtime linker cannot find TREXIO, add the library path to your environment variables before running\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Ubuntu/\+Debian\+:}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{export\ LD\_LIBRARY\_PATH=\$LD\_LIBRARY\_PATH:/usr/local/lib}
+\DoxyCodeLine{./MP2\_energy}
+
+\end{DoxyCode}
+ 
+\end{DoxyItemize}\hypertarget{md_INSTALL_autotoc_md11}{}\doxysubsection{\texorpdfstring{4.\+2 dyld library not loaded (mac\+OS)}{4.2 dyld library not loaded (macOS)}}\label{md_INSTALL_autotoc_md11}
+
+\begin{DoxyItemize}
+\item {\bfseries{MACOS\+:}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{export\ DYLD\_LIBRARY\_PATH=\$DYLD\_LIBRARY\_PATH:/usr/local/lib}
+\DoxyCodeLine{./MP2\_energy}
+
+\end{DoxyCode}
+ 
+\end{DoxyItemize}\hypertarget{md_INSTALL_autotoc_md12}{}\doxysubsection{\texorpdfstring{4.\+3 Check that TREXIO is visible to the compiler}{4.3 Check that TREXIO is visible to the compiler}}\label{md_INSTALL_autotoc_md12}
+If compilation fails due to missing headers/libraries, verify\+: • headers exist in {\ttfamily /usr/local/include} • libraries exist in {\ttfamily /usr/local/lib} You can confirm with\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ls\ /usr/local/include\ |\ grep\ trexio}
+\DoxyCodeLine{ls\ /usr/local/lib\ |\ grep\ trexio}
+
+\end{DoxyCode}
+ 

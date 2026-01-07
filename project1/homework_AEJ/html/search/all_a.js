@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['electron_20integrals_20and_20symmetry_0',['Two-electron integrals and symmetry',['../md_README.html#autotoc_md27',1,'']]],
-  ['energies_20in_20c_20using_20trexio_1',['Project #1 — Hartree–Fock and MP2 Energies in C using TREXIO',['../md_README.html',1,'']]],
-  ['energy_20expression_20closed_20shell_20mo_20basis_2',['MP2 energy expression (closed-shell, MO basis)',['../md_README.html#autotoc_md28',1,'']]],
-  ['errors_3',['4. Correction of errors',['../md_INSTALL.html#autotoc_md9',1,'']]],
-  ['example_20output_4',['Example output',['../md_README.html#autotoc_md34',1,'']]],
-  ['execute_5',['3.2 Execute',['../md_INSTALL.html#autotoc_md8',1,'']]],
-  ['expression_20closed_20shell_20mo_20basis_6',['MP2 energy expression (closed-shell, MO basis)',['../md_README.html#autotoc_md28',1,'']]]
+  ['file_0',['3.1 Input file',['../md_INSTALL.html#autotoc_md7',1,'']]],
+  ['files_20and_20objects_1',['2. Source Files and Objects',['../md_MAKEFILE.html#autotoc_md18',1,'']]],
+  ['found_20linux_2',['4.1 libtrexio.so / dynamic library not found (Linux)',['../md_INSTALL.html#autotoc_md10',1,'']]]
 ];

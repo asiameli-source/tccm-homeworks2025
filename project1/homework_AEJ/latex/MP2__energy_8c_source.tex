@@ -1,0 +1,33 @@
+\doxysection{MP2\+\_\+energy.\+c}
+\hypertarget{MP2__energy_8c_source}{}\label{MP2__energy_8c_source}\index{src/MP2\_energy.c@{src/MP2\_energy.c}}
+\mbox{\hyperlink{MP2__energy_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{MP2__energy_8h}{MP2\_energy.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00046}\mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{00046}}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(\textcolor{keywordtype}{int}\ p,\ \textcolor{keywordtype}{int}\ q,\ \textcolor{keywordtype}{int}\ r,\ \textcolor{keywordtype}{int}\ s,\ int64\_t\ nint,\ \textcolor{keyword}{const}\ int32\_t*\ index,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ value)\ \{}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00048}00048\ \ \ \textcolor{keywordflow}{for}\ (int64\_t\ n\ =\ 0;\ n\ <\ nint;\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00049}00049\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ index[4*n\ +\ 0];}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00050}00050\ \ \ \ \ \textcolor{keywordtype}{int}\ j\ =\ index[4*n\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00051}00051\ \ \ \ \ \textcolor{keywordtype}{int}\ k\ =\ index[4*n\ +\ 2];}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00052}00052\ \ \ \ \ \textcolor{keywordtype}{int}\ l\ =\ index[4*n\ +\ 3];}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00053}00053\ \ \ \ \ \textcolor{keywordtype}{double}\ v\ =\ value[n];}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00055}00055\ \ \ \ \ \textcolor{keywordflow}{if}\ (}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00056}00056\ \ \ \ \ \ \ (i==p\ \&\&\ j==q\ \&\&\ k==r\ \&\&\ l==s)\ ||\ \ \textcolor{comment}{//\ <ij|kl>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00057}00057\ \ \ \ \ \ \ (i==p\ \&\&\ l==q\ \&\&\ k==r\ \&\&\ j==s)\ ||\ \ \textcolor{comment}{//\ <il|kj>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00058}00058\ \ \ \ \ \ \ (k==p\ \&\&\ l==q\ \&\&\ i==r\ \&\&\ j==s)\ ||\ \ \textcolor{comment}{//\ <kl|ij>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00059}00059\ \ \ \ \ \ \ (k==p\ \&\&\ j==q\ \&\&\ i==r\ \&\&\ l==s)\ ||\ \ \textcolor{comment}{//\ <kj|il>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00060}00060\ \ \ \ \ \ \ (j==p\ \&\&\ i==q\ \&\&\ l==r\ \&\&\ k==s)\ ||\ \ \textcolor{comment}{//\ <ji|lk>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00061}00061\ \ \ \ \ \ \ (l==p\ \&\&\ i==q\ \&\&\ j==r\ \&\&\ k==s)\ ||\ \ \textcolor{comment}{//\ <li|jk>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00062}00062\ \ \ \ \ \ \ (l==p\ \&\&\ k==q\ \&\&\ j==r\ \&\&\ i==s)\ ||\ \ \textcolor{comment}{//\ <lk|ji>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00063}00063\ \ \ \ \ \ \ (j==p\ \&\&\ k==q\ \&\&\ l==r\ \&\&\ i==s)\ \ \ \ \ \textcolor{comment}{//\ <jk|li>}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00064}00064\ \ \ \ \ )\ \{}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00065}00065\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00066}00066\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00067}00067\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00068}00068\ \textcolor{comment}{//\ If\ not\ found\ in\ the\ list,\ the\ integral\ is\ zero\ (sparse\ format)\ }}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00069}00069\ \ \ \textcolor{keywordflow}{return}\ 0.0;}
+\DoxyCodeLine{\Hypertarget{MP2__energy_8c_source_l00070}00070\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,201 @@
+\doxysection{src/main.c File Reference}
+\hypertarget{main_8c}{}\label{main_8c}\index{src/main.c@{src/main.c}}
+
+
+Hartree–\+Fock (HF) total energy and MP2 correlation energy from a TREXIO file.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$trexio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include "{}MP2\+\_\+energy.\+h"{}}\newline
+Include dependency graph for main.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\begin{DoxyCompactList}\small\item\em Main program entry point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Hartree–\+Fock (HF) total energy and MP2 correlation energy from a TREXIO file. 
+
+This program reads all required quantities from a TREXIO dataset (here\+: "{}h2o.\+h5"{}) and computes\+:
+\begin{DoxyItemize}
+\item The closed-\/shell Hartree–\+Fock (restricted) total energy\+:  \[
+  E_{HF} = E_{nn} + 2\sum_{i}^{occ} h_{ii} + \sum_{ij}^{occ}\left(2(ij|ij) - (ij|ji)\right)
+  \]
+\item The canonical MP2 correlation energy\+:  \[
+  E_{MP2} = \sum_{ij}^{occ}\sum_{ab}^{virt} \frac{(ij|ab)\left[2(ij|ab)-(ij|ba)\right]}
+  {\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+  \]
+\end{DoxyItemize}
+
+All one-\/electron and two-\/electron integrals are assumed to be expressed in the molecular orbital (MO) basis.
+
+The two-\/electron integrals are stored in the TREXIO file in sparse format (index/value arrays). The retrieval of a specific ERI is delegated to the helper function get\+\_\+eri(...) declared in "{}\+MP2\+\_\+energy.\+h"{}.
+
+\begin{DoxyNote}{Note}
+The program assumes a closed-\/shell system where the number of occupied orbitals is equal to the number of spin-\/up electrons (n\+\_\+occ = n\+\_\+up).
+\end{DoxyNote}
+\begin{DoxyDate}{Date}
+2025 
+\end{DoxyDate}
+
+
+Definition in file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main program entry point. 
+
+The execution flow is described step-\/by-\/step below. \begin{DoxyReturn}{Returns}
+int Returns 0 if execution is successful. 
+\end{DoxyReturn}
+1. Open the TREXIO file. We open the file in read-\/only mode using the automatic backend detection. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{trexio\_t*\ trexio\_file\ =\ trexio\_open(\textcolor{stringliteral}{"{}h2o.h5"{}},\ \textcolor{charliteral}{'r'},\ TREXIO\_AUTO,\ \&rc);}
+\DoxyCodeLine{\textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{exit(1);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+2. Read Nuclear repulsion energy.\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} This is the classical Coulomb repulsion energy between nuclei (\$\+E\+\_\+\{nn\}\$). 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{double}\ Enn;}
+\DoxyCodeLine{rc\ =\ trexio\_read\_nucleus\_repulsion(trexio\_file,\ \&Enn);}
+\DoxyCodeLine{\textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ exit(1);}
+\DoxyCodeLine{printf(\textcolor{stringliteral}{"{}E\_nn\ =\ \%.10f\(\backslash\)n"{}},\ Enn);}
+
+\end{DoxyCode}
+
+
+3. Define Electron Occupancy. For a restricted closed-\/shell system, we read the up-\/spin electrons and assume \$\+N\+\_\+\{occ\} = N\+\_\+\{up\}\$. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{int32\_t\ n\_up\ =\ 0;}
+\DoxyCodeLine{trexio\_read\_electron\_up\_num(trexio\_file,\ \&n\_up);}
+\DoxyCodeLine{int32\_t\ n\_occ\ =\ n\_up;}
+
+\end{DoxyCode}
+
+
+4. Read Molecular Orbital (MO) dimensions. We need the total number of MOs to calculate the number of virtual orbitals (\$\+N\+\_\+\{virt\} = N\+\_\+\{mo\} -\/ N\+\_\+\{occ\}\$). 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{int32\_t\ mo\_num\ =\ 0;}
+\DoxyCodeLine{trexio\_read\_mo\_num(trexio\_file,\ \&mo\_num);}
+\DoxyCodeLine{int32\_t\ n\_virt\ =\ mo\_num\ -\/\ n\_occ;}
+
+\end{DoxyCode}
+
+
+Calculated virtual orbitals.
+
+5. Read Orbital Energies (\$\textbackslash{}epsilon\$). Allocates memory and reads the diagonal elements of the Fock matrix in MO basis. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{double}*\ mo\_energy\ =\ (\textcolor{keywordtype}{double}*)\ malloc((\textcolor{keywordtype}{size\_t})mo\_num\ *\ \textcolor{keyword}{sizeof}(double));}
+\DoxyCodeLine{trexio\_read\_mo\_energy(trexio\_file,\ mo\_energy);}
+
+\end{DoxyCode}
+
+
+One-\/electron integrals (core Hamiltonian)
+
+6. Read Core Hamiltonian (\$h\+\_\+\{pq\}\$). Stored as a dense matrix. We allocate \$\+N\+\_\+\{mo\} \textbackslash{}times N\+\_\+\{mo\}\$. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{double}*\ data\ =\ malloc((int64\_t)mo\_num\ *\ mo\_num\ *\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{trexio\_read\_mo\_1e\_int\_core\_hamiltonian(trexio\_file,\ data);}
+
+\end{DoxyCode}
+
+
+7. Prepare Two-\/\+Electron Integrals (ERIs). First, we read the number of non-\/zero integrals to allocate the buffers. Then we allocate {\ttfamily index} (quadruplets) and {\ttfamily value} arrays. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{int64\_t\ n\_integrals\ =\ 0;}
+\DoxyCodeLine{trexio\_read\_mo\_2e\_int\_eri\_size(trexio\_file,\ \&n\_integrals);}
+\DoxyCodeLine{}
+\DoxyCodeLine{int32\_t*\ index\ =\ malloc(4\ *\ n\_integrals\ *\ \textcolor{keyword}{sizeof}(int32\_t));}
+\DoxyCodeLine{\textcolor{keywordtype}{double}*\ value\ =\ malloc(n\_integrals\ *\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+
+\end{DoxyCode}
+
+
+Allocating memory for ERIs...
+
+8. Read the ERI chunks. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{rc\ =\ trexio\_read\_mo\_2e\_int\_eri(trexio\_file,\ offset\_file,\ \&buffer\_size,\ \ index,\ value);}
+
+\end{DoxyCode}
+
+
+9. Compute Hartree-\/\+Fock Energy.
+
+{\bfseries{Part A\+: One-\/electron term}} (\$\+E\+\_\+1 = 2 \textbackslash{}sum h\+\_\+\{ii\}\$) 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (int32\_t\ i\ =\ 0;\ i\ <\ n\_occ;\ i++)\ \{}
+\DoxyCodeLine{\textcolor{keywordtype}{double}\ hii\ =\ data[(int64\_t)i\ *\ mo\_num\ +\ i];}
+\DoxyCodeLine{E1\ +=\ 2.0\ *\ hii;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Computing E1...
+
+{\bfseries{Part B\+: Two-\/electron term}} (\$\+E\+\_\+2 = \textbackslash{}sum (2J -\/ K)\$). We use {\ttfamily get\+\_\+eri} to fetch integrals from the sparse arrays. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i<n\_occ;\ i++)\ \{}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j=0;\ j<n\_occ;\ j++)\ \{}
+\DoxyCodeLine{\textcolor{keywordtype}{double}\ J\ =\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(i,j,i,j...);}
+\DoxyCodeLine{\textcolor{keywordtype}{double}\ K\ =\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(i,j,j,i...);}
+\DoxyCodeLine{E2\ +=\ (2.0\ *\ J\ -\/\ K);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Total HF Sum.
+
+10. Compute MP2 Correlation Energy.
+
+Loops over occupied (i,j) and virtual (a,b) orbitals. \[ E_{MP2} = \sum \frac{num}{denom} \] 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ n\_occ;\ i++)\{}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j=0;\ j\ <\ n\_occ;\ j++)\{}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ a=n\_occ;\ a\ <\ mo\_num;\ a++)\{}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ b=n\_occ;\ b\ <\ mo\_num;\ b++)\{}
+\DoxyCodeLine{\textcolor{comment}{//\ ...\ calculation\ ...}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+11. Final Cleanup. Print results and free memory.
+
+Closing file and freeing memory.
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00042}{42}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+

@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['quick_20usage_0',['Quick usage',['../md_README.html#autotoc_md31',1,'']]]
+  ['readme_2emd_0',['README.md',['../README_8md.html',1,'']]],
+  ['references_1',['References',['../md_README.html#autotoc_md37',1,'']]],
+  ['requirements_2',['Requirements',['../md_README.html#autotoc_md23',1,'']]],
+  ['results_3',['Validation of the results',['../md_README.html#autotoc_md34',1,'']]],
+  ['running_20the_20program_4',['3. Running the program',['../md_INSTALL.html#autotoc_md6',1,'']]]
 ];

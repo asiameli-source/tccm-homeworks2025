@@ -1,0 +1,151 @@
+\doxysection{main.\+c}
+\hypertarget{main_8c_source}{}\label{main_8c_source}\index{src/main.c@{src/main.c}}
+\mbox{\hyperlink{main_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <trexio.h>}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{MP2__energy_8h}{MP2\_energy.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00035}00035\ \textcolor{comment}{//TREXIO\ PROGRAM}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00042}\mbox{\hyperlink{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{00042}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}}()\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00044}00044\ \ trexio\_exit\_code\ rc;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00056}00056\ \ trexio\_t*\ trexio\_file\ =\ trexio\_open(\textcolor{stringliteral}{"{}../data/h2o.h5"{}},\ \textcolor{charliteral}{'r'},\ TREXIO\_AUTO,\ \&rc);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00057}00057\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00058}00058\ \ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00059}00059\ \ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00060}00060\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00073}00073\ \ \textcolor{keywordtype}{double}\ Enn;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00074}00074\ \ rc\ =\ trexio\_read\_nucleus\_repulsion(trexio\_file,\ \&Enn);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00075}00075\ \ \textcolor{comment}{//-\/-\/-\/check\ the\ return\ code-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00076}00076\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00077}00077\ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error\ reading\ nuclear\ repulsion\ energy:\ \(\backslash\)n\%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00078}00078\ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00079}00079\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00080}00080\ \ printf(\textcolor{stringliteral}{"{}E\_nn\ =\ \%.10f\(\backslash\)n"{}},\ Enn);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00082}00082\ \textcolor{comment}{//\ Obtain\ Number\ of\ up\ electrons\ (Nocc)}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00092}00092\ \ int32\_t\ n\_up\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00093}00093\ \ rc\ =\ trexio\_read\_electron\_up\_num(trexio\_file,\ \&n\_up);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00094}00094\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00095}00095\ \ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00096}00096\ \ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00097}00097\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00098}00098\ \ printf(\textcolor{stringliteral}{"{}n\_up\ =\ \%d\(\backslash\)n"{}},\ n\_up);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00099}00099\ \textcolor{comment}{//\ For\ closed-\/shell:\ Nocc\ =\ N\_up}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00100}00100\ \ int32\_t\ n\_occ\ =\ n\_up;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00111}00111\ \ int32\_t\ mo\_num\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00112}00112\ \ rc\ =\ trexio\_read\_mo\_num(trexio\_file,\ \&mo\_num);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00113}00113\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00114}00114\ \ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00115}00115\ \ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00116}00116\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00117}00117\ \ printf(\textcolor{stringliteral}{"{}mo\_num\ =\ \%d\(\backslash\)n"{}},\ mo\_num);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00122}00122\ \ int32\_t\ n\_virt\ =\ mo\_num\ -\/\ n\_occ;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00123}00123\ \ printf(\textcolor{stringliteral}{"{}n\_virt\ =\ \%d\(\backslash\)n"{}},\ n\_virt);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00125}00125\ \textcolor{comment}{//read\ orbital\ energies}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00126}00126\ \textcolor{comment}{//trexio\_exit\_code\ trexio\_read\_mo\_energy(trexio\_t*\ const\ file,\ double*\ const\ mo\_energy);}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00135}00135\ \ \textcolor{keywordtype}{double}*\ mo\_energy\ =\ (\textcolor{keywordtype}{double}*)\ malloc((\textcolor{keywordtype}{size\_t})mo\_num\ *\ \textcolor{keyword}{sizeof}(double));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00136}00136\ \ \textcolor{keywordflow}{if}\ (mo\_energy\ ==\ NULL)\ \{\ fprintf(stderr,\ \textcolor{stringliteral}{"{}Malloc\ failed\ for\ mo\_energy\(\backslash\)n"{}});\ exit(1);\ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00138}00138\ \ rc\ =\ trexio\_read\_mo\_energy(trexio\_file,\ mo\_energy);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00139}00139\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00140}00140\ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error(read\ mo.energy):\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00141}00141\ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00142}00142\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00143}00143\ \ \textcolor{comment}{//\ To\ see\ the\ molecular\ orbital\ energies}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00144}00144\ \ printf(\textcolor{stringliteral}{"{}mo\_energies:\ \(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00145}00145\ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ mo\_num;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00146}00146\ \ \ \ printf(\textcolor{stringliteral}{"{}\ eps[\%d]\ =\ \%.10f\(\backslash\)n"{}},\ i,\ mo\_energy[i]);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00147}00147\ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00159}00159\ \ \textcolor{keywordtype}{double}*\ data\ =\ malloc((int64\_t)mo\_num\ *\ mo\_num\ *\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00160}00160\ \ \textcolor{keywordflow}{if}\ (data\ ==\ NULL)\ \{\ fprintf(stderr,\ \textcolor{stringliteral}{"{}Malloc\ failed\ for\ core\(\backslash\)n"{}});\ exit(1);\ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00162}00162\ \ rc\ =\ trexio\_read\_mo\_1e\_int\_core\_hamiltonian(trexio\_file,\ data);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00163}00163\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00164}00164\ \ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00165}00165\ \ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00166}00166\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00180}00180\ \ int64\_t\ n\_integrals\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00181}00181\ \ rc\ =\ trexio\_read\_mo\_2e\_int\_eri\_size(trexio\_file,\ \&n\_integrals);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00182}00182\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00183}00183\ \ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00184}00184\ \ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00185}00185\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00189}00189\ \ int32\_t*\ index\ =\ malloc(4\ *\ n\_integrals\ *\ \textcolor{keyword}{sizeof}(int32\_t));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00190}00190\ \ \textcolor{keywordtype}{double}*\ value\ =\ malloc(n\_integrals\ *\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00191}00191\ \ \textcolor{keywordflow}{if}\ (index\ ==\ NULL\ ||\ value\ ==\ NULL)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00192}00192\ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}Malloc\ failed\ for\ eri\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00193}00193\ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00194}00194\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00201}00201\ \ int64\_t\ offset\_file\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00202}00202\ \ int64\_t\ buffer\_size\ =\ n\_integrals;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00203}00203\ \ rc\ =\ trexio\_read\_mo\_2e\_int\_eri(trexio\_file,\ offset\_file,\ \&buffer\_size,\ \ index,\ value);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00204}00204\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00205}00205\ \ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00206}00206\ \ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00207}00207\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00208}00208\ \ printf(\textcolor{stringliteral}{"{}n\_integrals\ read\ =\ \%ld\(\backslash\)n"{}},\ (\textcolor{keywordtype}{long})\ buffer\_size);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00221}00221\ \textcolor{keywordtype}{double}\ E1\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00222}00222\ \textcolor{keywordtype}{double}\ E2\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00226}00226\ \textcolor{keywordflow}{for}\ (int32\_t\ i\ =\ 0;\ i\ <\ n\_occ;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00227}00227\ \ \textcolor{keywordtype}{double}\ hii\ =\ data[(int64\_t)i\ *\ mo\_num\ +\ i];}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00228}00228\ \ E1\ +=\ 2.0\ *\ hii;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00229}00229\ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00244}00244\ \ \textcolor{keywordflow}{for}\ (int32\_t\ i=0;\ i<n\_occ;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00245}00245\ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ j=0;\ j<n\_occ;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00246}00246\ \ \ \ \textcolor{keywordtype}{double}\ J\ =\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(i,j,i,j,\ buffer\_size,\ index,\ value);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00247}00247\ \ \ \ \textcolor{keywordtype}{double}\ K\ =\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(i,j,j,i,buffer\_size,\ index,\ value);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00248}00248\ \ \ \ E2\ +=\ (2.0\ *\ J\ -\/\ K);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00249}00249\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00250}00250\ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00254}00254\ \textcolor{keywordtype}{double}\ E\_hf\ =\ Enn\ +\ E1\ +\ E2;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00255}00255\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00273}00273\ \ \textcolor{keywordtype}{double}\ energy\_mp2\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00274}00274\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ n\_occ;\ i++)\{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00275}00275\ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j=0;\ j\ <\ n\_occ;\ j++)\{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00276}00276\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ a=n\_occ;\ a\ <\ mo\_num;\ a++)\{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00277}00277\ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ b=n\_occ;\ b\ <\ mo\_num;\ b++)\{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00278}00278\ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ijab\ =\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(i,\ j,\ a,\ b,\ buffer\_size,\ index,\ value);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00279}00279\ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ijba\ =\ \mbox{\hyperlink{MP2__energy_8c_a607403243771f7cbb192d2cfe584d3ef}{get\_eri}}(i,\ j,\ b,\ a,\ buffer\_size,\ index,\ value);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00280}00280\ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ denom\ =\ mo\_energy[i]\ +\ mo\_energy[j]\ -\/\ mo\_energy[a]\ -\/\ mo\_energy[b];}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00282}00282\ \ \ \ \ \ \ \ energy\_mp2\ +=\ \ (ijab\ *\ (2.0*ijab\ -\/\ ijba))\ /\ denom;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00283}00283\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00284}00284\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00285}00285\ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00286}00286\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00291}00291\ printf(\textcolor{stringliteral}{"{}E\_HF\ \ \ \ =\ \%.10f\(\backslash\)n"{}},\ E\_hf);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00292}00292\ printf(\textcolor{stringliteral}{"{}Energy\_MP2\ =\ \%.12f\(\backslash\)n"{}},\ energy\_mp2);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00293}00293\ printf(\textcolor{stringliteral}{"{}E\_total\ (HF+MP2)\ =\ \%.12f\(\backslash\)n"{}},\ E\_hf\ +\ energy\_mp2);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00294}00294\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00295}00295\ \textcolor{comment}{//\ Checking\ energies\ of\ the\ molecular\ orbitals}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00296}00296\ \textcolor{comment}{//\ printf("{}Check\ eps:\ eps[n\_occ-\/1]=\%.8f\ eps[n\_occ]=\%.8f\(\backslash\)n"{},\ mo\_energy[n\_occ-\/1],\ mo\_energy[n\_occ]);}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00301}00301\ \ rc\ =\ trexio\_close(trexio\_file);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00302}00302\ \ \textcolor{keywordflow}{if}\ (rc\ !=\ TREXIO\_SUCCESS)\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00303}00303\ \ \ printf(\textcolor{stringliteral}{"{}TREXIO\ Error:\ \%s\(\backslash\)n"{}},\ trexio\_string\_of\_error(rc));}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00304}00304\ \ \ exit(1);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00305}00305\ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00306}00306\ \ trexio\_file\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00307}00307\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00308}00308\ \ free(mo\_energy);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00309}00309\ \ free(data);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00310}00310\ \ free(index);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00311}00311\ \ free(value);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00312}00312\ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00313}00313\ \}}
+
+\end{DoxyCode}

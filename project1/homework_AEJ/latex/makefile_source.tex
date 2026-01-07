@@ -1,0 +1,24 @@
+\doxysection{makefile}
+\hypertarget{makefile_source}{}\label{makefile_source}\index{src/makefile@{src/makefile}}
+\mbox{\hyperlink{makefile}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00001}00001\ CC=gcc}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00002}00002\ SRC=MP2\_energy.c\ main.c}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00003}00003\ CFLAGS\ =\ -\/I/usr/local/include}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00004}00004\ LDFLAGS\ =\ -\/L/usr/local/lib}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00005}00005\ LDLIBS\ =\ -\/ltrexio}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00006}00006\ OBJ=\$(patsubst\ \%.c,\ \%.o,\ \$(SRC))}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{makefile_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{makefile_source_l00009}00009\ MP2\_energy:\ \$(OBJ)}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00010}00010\ \ \ \ \ \$(CC)\ -\/o\ MP2\_energy\ \$(OBJ)\ \$(LDFLAGS)\ \$(LDLIBS)}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{makefile_source_l00012}00012\ \%.o:\ \%.c}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00013}00013\ \ \ \ \ \$(CC)\ -\/c\ \$<\ \$(CFLAGS)}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{makefile_source_l00015}00015\ MP2\_energy.o:\ MP2\_energy.h}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{makefile_source_l00017}00017\ clean:}
+\DoxyCodeLine{\Hypertarget{makefile_source_l00018}00018\ \ \ \ \ rm\ -\/f\ \$(OBJ)\ MP2\_energy}
+
+\end{DoxyCode}

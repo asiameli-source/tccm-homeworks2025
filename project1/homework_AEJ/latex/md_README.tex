@@ -1,0 +1,219 @@
+\chapter{Project \#1 — Hartree–\+Fock and MP2 Energies in C using TREXIO}
+\hypertarget{md_README}{}\label{md_README}\index{Project \#1 — Hartree–Fock and MP2 Energies in C using TREXIO@{Project \#1 — Hartree–Fock and MP2 Energies in C using TREXIO}}
+\label{md_README_autotoc_md19}%
+\Hypertarget{md_README_autotoc_md19}%
+ This project implements the computation of the closed-\/shell Hartree–\+Fock (HF) total energy and the MP2 correlation energy in the molecular-\/orbital (MO) basis. Input data (MO one-\/ and two-\/electron integrals, MO energies, electron counts, nuclear repulsion energy) are read from TREXIO files ({\ttfamily .h5}).
+
+The code is written in C and links against the TREXIO C library.
+
+Project context\+: Advanced Computational Techniques / TCCM homework, Project \#1.
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md21}{}\doxysection{\texorpdfstring{Directory structure}{Directory structure}}\label{md_README_autotoc_md21}
+
+\begin{DoxyItemize}
+\item {\ttfamily src/}
+\begin{DoxyItemize}
+\item {\ttfamily \doxylink{main_8c}{main.\+c}} ~\newline
+ Main program. Reads data from a TREXIO file, computes the Hartree–\+Fock energy and the MP2 correlation energy, and prints the results.
+\item {\ttfamily \doxylink{MP2__energy_8c}{MP2\+\_\+energy.\+c}} ~\newline
+ External function that handles the symmetry of the two-\/electron integrals during the computations.
+\item {\ttfamily \doxylink{MP2__energy_8h}{MP2\+\_\+energy.\+h}} Header file defining the helper interface for ERI retrieval from TREXIO sparse arrays (index + value). Declares utility routines to handle ERI index permutations (8-\/fold symmetry) and to query specific integrals $\langle pq|rs\rangle$ needed in HF/\+MP2.
+\item {\ttfamily makefile} ~\newline
+ Compilation rules and linking against the TREXIO library.
+\end{DoxyItemize}
+\item {\ttfamily data/}
+\begin{DoxyItemize}
+\item {\ttfamily \texorpdfstring{$\ast$}{*}.h5} — TREXIO datasets provided for testing (e.\+g., {\ttfamily h2o.\+h5}, {\ttfamily ch4.\+h5}, ...)
+\end{DoxyItemize}
+\item {\ttfamily \doxylink{INSTALL_8md}{INSTALL.\+md}}
+\begin{DoxyItemize}
+\item compilation and run instructions
+\end{DoxyItemize}
+\item {\ttfamily AUTHORS}
+\begin{DoxyItemize}
+\item contributors list
+\end{DoxyItemize}
+\item {\ttfamily LICENSE}
+\begin{DoxyItemize}
+\item license of this code (e.\+g., MIT)
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md23}{}\doxysection{\texorpdfstring{Requirements}{Requirements}}\label{md_README_autotoc_md23}
+
+\begin{DoxyItemize}
+\item C compiler (tested with {\ttfamily gcc})
+\item TREXIO installed (headers and shared library)
+\begin{DoxyItemize}
+\item Documentation\+: \href{https://trex-coe.github.io/trexio/}{\texttt{ https\+://trex-\/coe.\+github.\+io/trexio/}}
+\end{DoxyItemize}
+\item Standard C libraries
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md25}{}\doxysection{\texorpdfstring{Theory and conventions}{Theory and conventions}}\label{md_README_autotoc_md25}
+\hypertarget{md_README_autotoc_md26}{}\doxysubsection{\texorpdfstring{Closed-\/shell orbital counting}{Closed-shell orbital counting}}\label{md_README_autotoc_md26}
+For a closed-\/shell reference, the number of occupied {\bfseries{spatial}} MOs is equal to the number of spin-\/up electrons\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily n\+\_\+occ = n\+\_\+up}
+\item Virtual orbitals\+: {\ttfamily n\+\_\+virt = mo\+\_\+num -\/ n\+\_\+occ}
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md27}{}\doxysubsection{\texorpdfstring{Two-\/electron integrals and symmetry}{Two-electron integrals and symmetry}}\label{md_README_autotoc_md27}
+TREXIO stores MO two-\/electron integrals (ERIs) in a sparse representation and exploits the 8-\/fold permutational symmetry. Therefore, only one representative of each symmetry class is stored in the file. During computation, the code must canonicalize/reorder indices consistently so that equivalent integrals are mapped to a unique location in memory.\hypertarget{md_README_autotoc_md28}{}\doxysubsection{\texorpdfstring{Hartree–\+Fock total energy}{Hartree–Fock total energy}}\label{md_README_autotoc_md28}
+The Hartree–\+Fock total energy is computed as\+:
+
+\[
+E_{\mathrm{HF}} = E_{\mathrm{NN}}
++ 2 \sum_{i \in \mathrm{occ}} \langle i|h|i\rangle
++ \sum_{i \in \mathrm{occ}} \sum_{j \in \mathrm{occ}}
+\left[ 2\langle ij|ij\rangle - \langle ij|ji\rangle \right]
+\]
+
+where\+:
+\begin{DoxyItemize}
+\item $E_{\mathrm{NN}}$ is the nuclear repulsion energy,
+\item $\langle i|h|i\rangle$ are matrix elements of the one-\/electron Hamiltonian, with $h = T + V_{\mathrm{ne}}$,
+\item $\langle ij|kl\rangle$ are two-\/electron Coulomb integrals in the MO basis,
+\item indices $i,j$ run over occupied spatial orbitals ( $i,j \in \mathrm{occ}$).
+\end{DoxyItemize}
+
+Implementation note\+: in the code, occupied indices {\ttfamily i,j} correspond to MO indices {\ttfamily \mbox{[}0, n\+\_\+occ-\/1\mbox{]}} (0-\/based indexing).\hypertarget{md_README_autotoc_md29}{}\doxysubsection{\texorpdfstring{MP2 energy expression}{MP2 energy expression}}\label{md_README_autotoc_md29}
+The MP2 correlation energy is computed as
+
+\[
+E_{\mathrm{MP2}} =
+\sum_{i,j \in \mathrm{occ}}
+\sum_{a,b \in \mathrm{virt}}
+\frac{\langle ij|ab\rangle \left[2\langle ij|ab\rangle - \langle ij|ba\rangle\right]}
+{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+\]
+
+where\+:
+\begin{DoxyItemize}
+\item $\varepsilon_p$ are MO orbital energies,
+\item $\langle ij|ab\rangle$ are two-\/electron repulsion integrals (ERIs) in the MO basis,
+\item indices $i,j$ run over occupied orbitals ( $i,j \in \mathrm{occ}$) and $a,b$ run over virtual orbitals ( $a,b \in \mathrm{virt}$).
+\end{DoxyItemize}
+
+Important implementation note\+: in the code, occupied indices {\ttfamily i,j} run over {\ttfamily \mbox{[}0, n\+\_\+occ-\/1\mbox{]}}, while virtual indices {\ttfamily a,b} are stored as {\bfseries{shifted}} indices {\ttfamily \mbox{[}0, n\+\_\+virt-\/1\mbox{]}} corresponding to MO indices {\ttfamily \mbox{[}n\+\_\+occ, mo\+\_\+num-\/1\mbox{]}}.
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md31}{}\doxysection{\texorpdfstring{Implementation overview}{Implementation overview}}\label{md_README_autotoc_md31}
+
+\begin{DoxyEnumerate}
+\item Open TREXIO file in read mode
+\item Read the nuclear repulsion energy (E\+\_\+\{NN\})
+\item Determine the occupied space
+\begin{DoxyItemize}
+\item read the number of spin-\/up electrons;
+\end{DoxyItemize}
+\item Read the MO dimension and define the virtual space
+\begin{DoxyItemize}
+\item MO numbers
+\item compute number of virtual orbitals
+\end{DoxyItemize}
+\item Read MO orbital energies
+\begin{DoxyItemize}
+\item allocate
+\end{DoxyItemize}
+\item Read one-\/electron integrals (core Hamiltonian, MO basis)
+\begin{DoxyItemize}
+\item allocate the dense matrix
+\end{DoxyItemize}
+\item Read sparse two-\/electron integrals (ERIs)
+\begin{DoxyItemize}
+\item read the number of stored ERIs
+\item allocate sparse buffers
+\item read the ERI block
+\end{DoxyItemize}
+\item ERI access via \textquotesingle{}get\+\_\+eri(...)\textquotesingle{} function
+\item Compute the closed-\/shell Hartree-\/\+Fock total energy
+\item Compute the MP2 correlation energy
+\item Print, close and free
+\begin{DoxyItemize}
+\item print \textquotesingle{}E\+\_\+hf\textquotesingle{}, \textquotesingle{}E\+\_\+\+MP2\textquotesingle{} and \textquotesingle{}E\+\_\+hf + E\+\_\+\+MP2\textquotesingle{}
+\item Close TREXIO file
+\item Free heap allocations
+\end{DoxyItemize}
+\end{DoxyEnumerate}\hypertarget{md_README_autotoc_md32}{}\doxysection{\texorpdfstring{Quick usage}{Quick usage}}\label{md_README_autotoc_md32}
+Typical execution is\+:
+
+
+\begin{DoxyItemize}
+\item compile the code using {\ttfamily make} (see {\ttfamily \doxylink{INSTALL_8md}{INSTALL.\+md}})
+\item run by providing a dataset path, e.\+g.
+\begin{DoxyItemize}
+\item {\ttfamily ../data/h2o.h5}
+\item {\ttfamily ../data/ch4.h5}
+\item etc ...
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+If your program expects a specific input file name (default is usually {\ttfamily h2o.\+h5}), ensure this file is present in the right directory where you execute the binary.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\#\ Example\ if\ the\ file\ is\ hardcoded}
+\DoxyCodeLine{make}
+\DoxyCodeLine{./MP2\_energy}
+
+\end{DoxyCode}
+ \hypertarget{md_README_autotoc_md33}{}\doxysection{\texorpdfstring{Limitations of the program}{Limitations of the program}}\label{md_README_autotoc_md33}
+
+\begin{DoxyItemize}
+\item The current implementation assumes a closed-\/shell reference.
+\item All MP2-\/relevant ERIs are stored in memory as a dense array, which limits the size of systems that can be treated.
+\item No parallelization is implemented.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md34}{}\doxysection{\texorpdfstring{Validation of the results}{Validation of the results}}\label{md_README_autotoc_md34}
+The computed HF and MP2 energies were validated against reference values given by README.\+org with the expected energies.\hypertarget{md_README_autotoc_md35}{}\doxysection{\texorpdfstring{Example output}{Example output}}\label{md_README_autotoc_md35}
+After following the instructions in {\ttfamily install.\+md} and running the programme, the following will appear on your screen\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{E\_nn\ =\ 9.1949655588}
+\DoxyCodeLine{n\_up\ =\ 5}
+\DoxyCodeLine{mo\_num\ =\ 24}
+\DoxyCodeLine{n\_virt\ =\ 19}
+\DoxyCodeLine{mo\_energies:\ }
+\DoxyCodeLine{\ eps[0]\ =\ -\/20.5504129056}
+\DoxyCodeLine{\ eps[1]\ =\ -\/1.3367079518}
+\DoxyCodeLine{\ eps[2]\ =\ -\/0.6993360012}
+\DoxyCodeLine{\ eps[3]\ =\ -\/0.5665672596}
+\DoxyCodeLine{\ eps[4]\ =\ -\/0.4931469674}
+\DoxyCodeLine{\ eps[5]\ =\ 0.1855792510}
+\DoxyCodeLine{\ eps[6]\ =\ 0.2562590031}
+\DoxyCodeLine{\ eps[7]\ =\ 0.7893769262}
+\DoxyCodeLine{\ eps[8]\ =\ 0.8543469000}
+\DoxyCodeLine{\ eps[9]\ =\ 1.1634990357}
+\DoxyCodeLine{\ eps[10]\ =\ 1.2003880311}
+\DoxyCodeLine{\ eps[11]\ =\ 1.2532917356}
+\DoxyCodeLine{\ eps[12]\ =\ 1.4446530136}
+\DoxyCodeLine{\ eps[13]\ =\ 1.4762517905}
+\DoxyCodeLine{\ eps[14]\ =\ 1.6747291515}
+\DoxyCodeLine{\ eps[15]\ =\ 1.8673061248}
+\DoxyCodeLine{\ eps[16]\ =\ 1.9349291935}
+\DoxyCodeLine{\ eps[17]\ =\ 2.4530526921}
+\DoxyCodeLine{\ eps[18]\ =\ 2.4905194013}
+\DoxyCodeLine{\ eps[19]\ =\ 3.2856783451}
+\DoxyCodeLine{\ eps[20]\ =\ 3.3390040631}
+\DoxyCodeLine{\ eps[21]\ =\ 3.5105917528}
+\DoxyCodeLine{\ eps[22]\ =\ 3.8660278118}
+\DoxyCodeLine{\ eps[23]\ =\ 4.1475335982}
+\DoxyCodeLine{n\_integrals\ read\ =\ 13458}
+\DoxyCodeLine{E\_HF\ \ \ \ =\ -\/76.0267987082}
+\DoxyCodeLine{Energy\_MP2\ =\ -\/0.203959974098}
+\DoxyCodeLine{E\_total\ (HF+MP2)\ =\ -\/76.230758682348}
+
+\end{DoxyCode}
+ \hypertarget{md_README_autotoc_md36}{}\doxysection{\texorpdfstring{Authors}{Authors}}\label{md_README_autotoc_md36}
+Asia Meli, Yiyi Yang and Eloá Abreu.
+
+Project for Advanced Computational Techniques, 2025.\hypertarget{md_README_autotoc_md37}{}\doxysection{\texorpdfstring{References}{References}}\label{md_README_autotoc_md37}
+Szabo, A., \& Ostlund, N. S. (1982). Modern quantum chemistry \+: introduction to advanced electronic structure theory.
+
+Trex-\/\+CoE. (n.\+d.). TREXIO source code documentation. \href{https://trex-coe.github.io/trexio/}{\texttt{ https\+://trex-\/coe.\+github.\+io/trexio/}}
+
+Doxygen homepage. (n.\+d.). \href{https://www.doxygen.nl/}{\texttt{ https\+://www.\+doxygen.\+nl/}}
+
+Cha\+GPT for any doubts, understand C syntax, diagnose compilation/linking/runtime issues, as a support tool to clarify both theoretical and practical espects of the implementation, assist in drafting and structuring the repository documentation 

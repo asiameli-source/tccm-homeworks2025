@@ -24,7 +24,6 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -117,7 +116,7 @@ $(document).ready(function(){initNavTree('main_8c_source.html',''); initResizabl
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">   42</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> trexio_exit_code rc;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> trexio_t* trexio_file = trexio_open(<span class="stringliteral">&quot;h2o.h5&quot;</span>, <span class="charliteral">&#39;r&#39;</span>, TREXIO_AUTO, &amp;rc);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> trexio_t* trexio_file = trexio_open(<span class="stringliteral">&quot;../data/h2o.h5&quot;</span>, <span class="charliteral">&#39;r&#39;</span>, TREXIO_AUTO, &amp;rc);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> <span class="keywordflow">if</span> (rc != TREXIO_SUCCESS) {</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>   printf(<span class="stringliteral">&quot;TREXIO Error: %s\n&quot;</span>, trexio_string_of_error(rc));</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>   exit(1);</div>
