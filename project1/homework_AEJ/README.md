@@ -55,12 +55,12 @@ TREXIO stores MO two-electron integrals (ERIs) in a sparse representation and ex
 ### Hartree–Fock total energy
 The Hartree–Fock total energy is computed as:
 
-\f[
+$$
 E_{\mathrm{HF}} = E_{\mathrm{NN}}
 + 2 \sum_{i \in \mathrm{occ}} \langle i|h|i\rangle
 + \sum_{i \in \mathrm{occ}} \sum_{j \in \mathrm{occ}}
 \left[ 2\langle ij|ij\rangle - \langle ij|ji\rangle \right]
-\f]
+$$
 
 where:
 - \f$E_{\mathrm{NN}}\f$ is the nuclear repulsion energy,
@@ -73,13 +73,13 @@ Implementation note: in the code, occupied indices `i,j` correspond to MO indice
 ### MP2 energy expression
 The MP2 correlation energy is computed as
 
-\f[
+$$
 E_{\mathrm{MP2}} =
 \sum_{i,j \in \mathrm{occ}}
 \sum_{a,b \in \mathrm{virt}}
 \frac{\langle ij|ab\rangle \left[2\langle ij|ab\rangle - \langle ij|ba\rangle\right]}
 {\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
-\f]
+$$
 
 where:
 - \f$\varepsilon_p\f$ are MO orbital energies,
