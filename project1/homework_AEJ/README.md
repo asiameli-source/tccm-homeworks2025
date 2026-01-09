@@ -55,28 +55,19 @@ TREXIO stores MO two-electron integrals (ERIs) in a sparse representation and ex
 ### Hartree–Fock total energy
 The Hartree–Fock total energy is computed as:
 
-\[
-E_{\mathrm{HF}} = E_{\mathrm{NN}}
-+ 2 \sum_{i \in \mathrm{occ}} \langle i \lvert h \rvert i \rangle
-+ \sum_{i \in \mathrm{occ}} \sum_{j \in \mathrm{occ}}
-\left[ 2 \langle ij \lvert ij \rangle - \langle ij \lvert ji \rangle \right]
-\]
+$$
+E_{\mathrm{HF}} =
+E_{\mathrm{NN}} + 2\sum_{i=1}^{N_{\mathrm{occ}}} \langle i|h|i\rangle + \sum_{i=1}^{N_{\mathrm{occ}}} \sum_{j=1}^{N_{\mathrm{occ}}} [2 \langle ij|ij \rangle - \langle ij|ji\rangle]
+$$
+
 
 where:
-\begin{itemize}
-  \item $E_{\mathrm{NN}}$ is the nuclear repulsion energy.
-  \item $\langle i \lvert h \rvert i \rangle$ are matrix elements of the one-electron Hamiltonian, with
-        $h = T + V_{\mathrm{ne}}$.
-  \item $\langle ij \lvert kl \rangle$ are two-electron Coulomb integrals in the MO basis.
-  \item Indices $i,j$ un over occupied spatial orbitals ($i,j \in \mathrm{occ}$).
-\end{itemize}
+- $E_{\mathrm{NN}}$ is the nuclear repulsion energy.
+- $2\sum_{i=1}\langle i|h|i\rangle$ are matrix elements of the one-electron Hamiltonian, where $h = T + V_{\mathrm{ne}}$.
+- $\langle ij|kl\rangle$ are two-electron Coulomb integrals in the molecular orbital (MO) basis.
+- Indices $i, j$ run over the occupied spatial orbitals $( i, j \in \mathrm{occ}) \$.
 
-- \f$E_{\mathrm{NN}}\f$ ,
-- \f$\langle i|h|i\rangle\f$ are matrix elements of the one-electron Hamiltonian, with \f$h = T + V_{\mathrm{ne}}\f$,
-- \f$\langle ij|kl\rangle\f$ are two-electron Coulomb integrals in the MO basis,
-- indices \f$i,j\f$ run over occupied spatial orbitals (\f$i,j \in \mathrm{occ}\f$).
-
-Implementation note: in the code, occupied indices `i,j` correspond to MO indices `[0, n_occ-1]` (0-based indexing).
+Implementation note: in the code, occupied indices `i,j` correspond to MO indices `[0, n_occ-1]`.
 
 ### MP2 energy expression
 The MP2 correlation energy is computed as
@@ -90,9 +81,9 @@ E_{\mathrm{MP2}} =
 $$
 
 where:
-- \f$\varepsilon_p\f$ are MO orbital energies,
-- \f$\langle ij|ab\rangle\f$ are two-electron repulsion integrals (ERIs) in the MO basis,
-- indices \f$i,j\f$ run over occupied orbitals (\f$i,j \in \mathrm{occ}\f$) and \f$a,b\f$ run over virtual orbitals (\f$a,b \in \mathrm{virt}\f$).
+- $\varepsilon_p$ are MO orbital energies,
+- $\langle ij|ab\rangle$ are two-electron repulsion integrals (ERIs) in the MO basis,
+- indices $i,j$ run over occupied orbitals ($i,j \in \mathrm{occ}$) and $a,b$ run over virtual orbitals ($a,b \in \mathrm{virt}$).
 
 Important implementation note: in the code, occupied indices `i,j` run over `[0, n_occ-1]`, while virtual indices `a,b` are stored as **shifted** indices `[0, n_virt-1]` corresponding to MO indices `[n_occ, mo_num-1]`.
 
@@ -101,7 +92,7 @@ Important implementation note: in the code, occupied indices `i,j` run over `[0,
 ## Implementation overview
 
 1.  Open TREXIO file in read mode
-2.  Read the nuclear repulsion energy \(E_{NN}\)
+2.  Read the nuclear repulsion energy $E_{NN}$
 3.  Determine the occupied space
     - read the number of spin-up electrons;
 4.  Read the MO dimension and define the virtual space
@@ -119,7 +110,7 @@ Important implementation note: in the code, occupied indices `i,j` run over `[0,
 9.  Compute the closed-shell Hartree-Fock total energy
 10. Compute the MP2 correlation energy
 11. Print, close and free
-    - print 'E_hf', 'E_MP2' and 'E_hf + E_MP2'
+    - print $E_{\mathrm{HF}}$, $E_{\mathrm{MP2}}$ and $E_{\mathrm{HF}} + E_{\mathrm{MP2}}$
     - Close TREXIO file
     - Free heap allocations
 
@@ -189,7 +180,7 @@ Energy_MP2 = -0.203959974098
 E_total (HF+MP2) = -76.230758682348
 ```
 ## Authors
-Asia Meli, Yiyi Yang and Eloá Abreu. 
+Eloá Abreu, Asia Meli and Yiyi Yang.
 
 Project for Advanced Computational Techniques, 2025.
 
