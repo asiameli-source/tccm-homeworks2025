@@ -55,15 +55,23 @@ TREXIO stores MO two-electron integrals (ERIs) in a sparse representation and ex
 ### Hartree–Fock total energy
 The Hartree–Fock total energy is computed as:
 
-$$
+\[
 E_{\mathrm{HF}} = E_{\mathrm{NN}}
-+ 2 \sum_{i \in \mathrm{occ}} \langle i|h|i\rangle
++ 2 \sum_{i \in \mathrm{occ}} \langle i \lvert h \rvert i \rangle
 + \sum_{i \in \mathrm{occ}} \sum_{j \in \mathrm{occ}}
-\left[ 2\langle ij|ij\rangle - \langle ij|ji\rangle \right]
-$$
+\left[ 2 \langle ij \lvert ij \rangle - \langle ij \lvert ji \rangle \right]
+\]
 
 where:
-- \f$E_{\mathrm{NN}}\f$ is the nuclear repulsion energy,
+\begin{itemize}
+  \item $E_{\mathrm{NN}}$ is the nuclear repulsion energy.
+  \item $\langle i \lvert h \rvert i \rangle$ are matrix elements of the one-electron Hamiltonian, with
+        $h = T + V_{\mathrm{ne}}$.
+  \item $\langle ij \lvert kl \rangle$ are two-electron Coulomb integrals in the MO basis.
+  \item Indices $i,j$ un over occupied spatial orbitals ($i,j \in \mathrm{occ}$).
+\end{itemize}
+
+- \f$E_{\mathrm{NN}}\f$ ,
 - \f$\langle i|h|i\rangle\f$ are matrix elements of the one-electron Hamiltonian, with \f$h = T + V_{\mathrm{ne}}\f$,
 - \f$\langle ij|kl\rangle\f$ are two-electron Coulomb integrals in the MO basis,
 - indices \f$i,j\f$ run over occupied spatial orbitals (\f$i,j \in \mathrm{occ}\f$).
